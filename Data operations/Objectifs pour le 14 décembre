@@ -1,0 +1,24 @@
+Objectif : comprendre les comportements de réabonnement des abonnés en fonction des différents types de promotions (Semaine généreuse vs autres ODD vs hors promotion)
+ 
+1) Identifier différents types d'ODD :
+=> semaine généreuse (EV+/TC) => SG
+=> ODD 7 jours autre que SG
+=> ODD 15 jours EV+
+=> ODD 15 jours TC
+=> ODD 21 jours EV+
+=> ODD 21 jours TC
+=> Autres types d'ODD ?
+ 
+Vérifiez bien que chaque type d’ODD que vous identifiez a été activé un nombre suffisant de fois pour rentrer dans le cadre de l’analyse.
+Je vous laisse me proposer une première liste d’ODDs.
+ 
+2) Répartition des réabonnements par type de promotions et hors promotion par année/mois :
+ => total pays
+=> par region / secteur
+=> canal de distribution / enseigne
+ => moyens de paiement
+ => formule prec
+ 
+3) Répartition des réabonnements par délai de réabonnement (depuis fin de l'abonnement précédent) par type de promotions et hors promotion.
+ 
+4) Répartition des réabonnements par taux de consommation (12 mois glissants) par type de promotions et hors promotion.
