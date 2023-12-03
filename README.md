@@ -1,3 +1,3 @@
 # Statapp-CANAL
 
-Test Organization
+StatApp
