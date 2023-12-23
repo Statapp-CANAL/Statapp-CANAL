@@ -78,3 +78,24 @@ df_Données_Reabos_2021 = clean_dates(df)
 save_to_csv_file(df_Données_Reabos_2021.head(),"/Users/maximecoppa/Desktop/Statapp/Datas_head/df_Données_Reabos_2021_head.csv")
 
 
+
+
+def upload_clean(data_path):
+    """
+    Download clean files in your data_path
+    There has to be the dirty files in your data_path
+    """
+    df = file_to_dataframe(data_path + "Correspondances_Promos_2.csv",";")
+    df_Correspondances_Promos = change_dates_all(df,['DEBVAL', 'FINVAL', 'DEBABOMIN', 'DEBABOMAX'])
+    save_to_csv_file(df_Correspondances_Promos,path + "df_Correspondances_Promos.csv")
+
+    for i in range(1, 4, 1):
+        df = file_to_dataframe(data_path + f"Données_Promos_202{i}.csv",",")
+        df_Données_Promos_202i = clean_dates(df)
+        save_to_csv_file(df_Données_Promos_202i, data_path + f"df_Données_Promos_202{i}.csv")
+
+        df = file_to_dataframe(data_path + f"Données_Reabos_202{i}.csv",",")
+        df_Données_Reabos_202i = clean_dates(df)
+        save_to_csv_file(df_Données_Reabos_202i.head(),data_path + f"df_Données_Reabos_202{i}_head.csv")
+
+    return
