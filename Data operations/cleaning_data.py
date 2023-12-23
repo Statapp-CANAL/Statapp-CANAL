@@ -100,17 +100,17 @@ def upload_clean(data_path):
 
     return
 
-def join_all_years(data_path):
+def concat_all_years(data_path):
     """
-    Create new csv files that show the 3 years at once.
+    Create new csv files that concats the 3 years at once.
     """
-    for name in ["Données_Promos_202", "Données_Reabos_202"]:
+    for name in ["df_Données_Promos_202", "df_Données_Reabos_202"]:
         df1 = file_to_dataframe(data_path + name + "1.csv",",")
         df2 = file_to_dataframe(data_path + name + "2.csv",",")
         df3 = file_to_dataframe(data_path + name + "3.csv",",")
 
-        df = pd.concat([df1, df2, df3], ignore_index=True)
-        df.to_csv(data_path + "df_" + name[:-4], index = False)
+        df = pd.concat([df1, df2, df3], axis=0, ignore_index=True)
+        print(df.head(), df.tail())
+        df.to_csv(data_path + name[:-4] + ".csv", index = False)
 
     return
-
