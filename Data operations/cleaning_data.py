@@ -110,7 +110,7 @@ def join_all_years(data_path):
         df3 = file_to_dataframe(data_path + name + "3.csv",",")
 
         df = pd.concat([df1, df2, df3], ignore_index=True)
-        df.to_cscv(data_path + name[:-4], index = False)
+        df.to_csv(data_path + "df_" + name[:-4], index = False)
 
     return
 
