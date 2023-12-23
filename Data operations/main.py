@@ -1,5 +1,7 @@
 # Run pour clément
+import pandas as pd
 
 data_path = "/Users/clementgadeau/Library/CloudStorage/OneDrive-GENES/Cours 2A/Statapp/CANAL+/Datas/"
-from cleaning_data import upload_clean
-upload_clean(data_path)
+from cleaning_data import *
+
+join_all_years(data_path)

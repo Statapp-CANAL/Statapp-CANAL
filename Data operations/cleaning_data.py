@@ -87,7 +87,7 @@ def upload_clean(data_path):
     """
     df = file_to_dataframe(data_path + "Correspondances_Promos_2.csv",";")
     df_Correspondances_Promos = change_dates_all(df,['DEBVAL', 'FINVAL', 'DEBABOMIN', 'DEBABOMAX'])
-    save_to_csv_file(df_Correspondances_Promos,path + "df_Correspondances_Promos.csv")
+    save_to_csv_file(df_Correspondances_Promos,data_path + "df_Correspondances_Promos.csv")
 
     for i in range(1, 4, 1):
         df = file_to_dataframe(data_path + f"Données_Promos_202{i}.csv",",")
@@ -96,6 +96,21 @@ def upload_clean(data_path):
 
         df = file_to_dataframe(data_path + f"Données_Reabos_202{i}.csv",",")
         df_Données_Reabos_202i = clean_dates(df)
-        save_to_csv_file(df_Données_Reabos_202i.head(),data_path + f"df_Données_Reabos_202{i}_head.csv")
+        save_to_csv_file(df_Données_Reabos_202i,data_path + f"df_Données_Reabos_202{i}.csv")
 
     return
+
+def join_all_years(data_path):
+    """
+    Create new csv files that show the 3 years at once.
+    """
+    for name in ["Données_Promos_202", "Données_Reabos_202"]:
+        df1 = file_to_dataframe(data_path + name + "1.csv",",")
+        df2 = file_to_dataframe(data_path + name + "2.csv",",")
+        df3 = file_to_dataframe(data_path + name + "3.csv",",")
+
+        df = pd.concat([df1, df2, df3], ignore_index=True)
+        df.to_cscv(data_path + name[:-4], index = False)
+
+    return
+
