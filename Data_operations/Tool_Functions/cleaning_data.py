@@ -110,7 +110,9 @@ def concat_all_years(data_path):
         df3 = file_to_dataframe(data_path + name + "3.csv",",")
 
         df = pd.concat([df1, df2, df3], axis=0, ignore_index=True)
-        print(df.head(), df.tail())
-        df.to_csv(data_path + name[:-4] + ".csv", index = False)
+
+        df.to_csv(data_path + name[:-4] + ".csv", index = True)
+
 
     return
+
