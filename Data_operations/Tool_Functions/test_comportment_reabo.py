@@ -163,7 +163,8 @@ def repartition_reabo(data_path, data_path_results):
     df_Données_Promos_2021 = file_to_dataframe(data_path + "df_Données_Promos_2021_odd.csv",",")
     df_Données_Reabos_2021 = file_to_dataframe(data_path + "df_Données_Reabos_2021.csv",",")
 
-    end_abo = 'DATE_FIN_ABO_PREC'
+    end_abo = 'DATE_FIN_REABO'
+    # Ici il y avait "DATE_FIN_ABO_PREC" mais j'ai l'impression que la variable s'appelle plutot "DATE_FIN_REABO"
     date_reabo = 'DATE_ACTE_REEL'
 
     df_Données_Reabos_2021 = time_reabo_columns(df_Données_Reabos_2021,end_abo,date_reabo) #Creation new colum "TIME_REABO"
