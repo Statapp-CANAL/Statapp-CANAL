@@ -1,17 +1,16 @@
 import pandas as pd
 import math 
+import sys 
+sys.path.append("Data_operations")
 
-from cleaning_data import file_to_dataframe
-from cleaning_data import save_to_csv_file
-from join_data import join_dataFrames
-from join_data import join_dataFrames_outer
+from Tool_Functions.cleaning_data import file_to_dataframe, save_to_csv_file
+from Tool_Functions.join_data import join_dataFrames, join_dataFrames_outer
+from Tool_Functions.comportment_reabo import *
 
-from comportment_reabo import df_filter_condition, create_new_column, apply_conditions, keep_used_odd, count_abo_conditions, mean_empty_col, df_mois_annee, time_reabo_columns, mean_time_reabo, str_to_date
-
-#1) 
+# 1) 
 # In this part we create a new table Correspondance_promos by putting the promo in groups 
 
-def creation_df_odd(data_path, data_path_results) :
+def creation_df_odd(data_path, data_path_results):
     """
     This function creates the new df_odd on your Computer where all the ODD are presented and classified with their type
     """
@@ -72,13 +71,13 @@ def create_df_Données_Promos_odd(data_path, data_path_results):
     for i in [1, 2, 3]:
         #année i
         df_Données_Promos_202i = file_to_dataframe(data_path + f"df_Données_Promos_202{i}.csv",",")
-        df_odd = file_to_dataframe(data_path + f"odd_202{i}.csv")
+        df_odd = file_to_dataframe(data_path + f"odd_202{i}.csv", ",")
         df_Données_Promos_202i_odd = join_dataFrames(df_Données_Promos_202i,df_odd[['CPROMO','TYPE_PROMON']] ,'CPROMO') #We create a new column 'TYPE_PROMON' on df_Données_Promos_202i
         save_to_csv_file(df_Données_Promos_202i_odd,data_path_results + f"df_Données_Promos_202{i}_odd.csv") #we save it on your Mac
 
     #les 3 années
     df_Données_Promos = file_to_dataframe(data_path + "df_Données_Promos.csv",",")
-    df_odd = file_to_dataframe(data_path + "odd.csv")
+    df_odd = file_to_dataframe(data_path + "odd.csv", ",")
     df_Données_Promos_odd = join_dataFrames(df_Données_Promos,df_odd[['CPROMO','TYPE_PROMON']] ,'CPROMO') #We create a new column 'TYPE_PROMON' on df_Données_Promos_202i
     save_to_csv_file(df_Données_Promos_odd,data_path_results + "df_Données_Promos_odd.csv") #we save it on your Mac
 

@@ -1,7 +1,9 @@
 import pandas as pd
 import math 
+import sys 
+sys.path.append("Data_operations")
 
-from join_data import join_dataFrames
+from Tool_Functions.join_data import join_dataFrames
 
 
 #Some functions to manipulate the dates 
@@ -92,6 +94,7 @@ def create_new_column(df: pd.DataFrame,function):
     """
     This function is used to sendback a new column using the function apply
     and applying function to the elements 
+    Warning : returns a df of 1 column that is the application of function over each lines.
     """
     return df.apply(function,axis = 1)
 

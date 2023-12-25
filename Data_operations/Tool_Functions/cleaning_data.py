@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 
-def file_to_dataframe(filenames,st): 
+def file_to_dataframe(filenames,st = ','): 
     """
     Initialize the DataFrame from a filenames 
     Parameters: 
