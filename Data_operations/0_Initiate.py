@@ -7,6 +7,5 @@ from Tool_Functions.cleaning_data import *
 data_path = "/Users/clementgadeau/Statapp/CSV files/"
 
 # Lancez ça pour télécharger les fichiers csv des df nettoyés, et des df concaténés.
-
-#upload_clean(data_path)
-#concat_all_years(data_path)
+upload_clean(data_path)
+concat_all_years(data_path)

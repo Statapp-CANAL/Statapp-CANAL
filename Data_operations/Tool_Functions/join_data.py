@@ -27,9 +27,13 @@ def join_dataFrames(df1,df2,cond):
 def calculate_nb_promos(df):
     return(df.groupby('CPROMO')['ID_ABONNE'].count())
 
-df_Correspondances_Promos = file_to_dataframe("/Users/maximecoppa/Desktop/Statapp/Datas_head/df_Correspondances_Promos.csv",",")
-df_Données_Promos_2021 = file_to_dataframe("/Users/maximecoppa/Desktop/Statapp/Datas_clean/df_Données_Promos_2021.csv",",")
-df_Données_Reabos_2021 = file_to_dataframe("/Users/maximecoppa/Desktop/Statapp/Datas_clean/df_Données_Reabos_2021.csv",",")
+data_path_head = "/Users/maximecoppa/Desktop/Statapp/Datas_head/"
+data_path_clean = "/Users/maximecoppa/Desktop/Statapp/Datas_clean/"
+
+
+df_Correspondances_Promos = file_to_dataframe(data_path_head + "df_Correspondances_Promos.csv",",")
+df_Données_Promos_2021 = file_to_dataframe(data_path_clean + "df_Données_Promos_2021.csv",",")
+df_Données_Reabos_2021 = file_to_dataframe(data_path_clean + "df_Données_Reabos_2021.csv",",")
 
 df_join = join_dataFrames(df_Données_Promos_2021,df_Données_Reabos_2021,['ID_ABONNE','DATE_ACTE_REEL'])
 n,_ = df_join.shape

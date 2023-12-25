@@ -11,13 +11,13 @@ from comportment_reabo import df_filter_condition, create_new_column, apply_cond
 #1) 
 # In this part we create a new table Correspondance_promos by putting the promo in groups 
 
-def creation_df_odd() :
+def creation_df_odd(data_path, data_path_results) :
     """
     This function creates the new df_odd on your Computer where all the ODD are presented and classified with their type
     """
 
-    data_path = "/Users/maximecoppa/Desktop/Statapp/Datas_clean/" #where to find the datas used
-    data_path_results = "/Users/maximecoppa/Desktop/Statapp/Datas_clean/" #where to create your new file
+    #data_path = "/Users/maximecoppa/Desktop/Statapp/Datas_clean/" #where to find the datas used
+    #data_path_results = "/Users/maximecoppa/Desktop/Statapp/Datas_clean/" #where to create your new file
 
     df_Correspondances_Promos = file_to_dataframe(data_path + "df_Correspondances_Promos.csv",",") 
 
@@ -25,14 +25,24 @@ def creation_df_odd() :
     df_odd['TYPE_PROMON'] = create_new_column(df_odd,apply_conditions) #we create new columns on this DataFrame of the ODD type
 
 
-    #creation df_odd_2021
-    df_Données_Promos_2021 = file_to_dataframe(data_path + "df_Données_Promos_2021.csv",",")
+    for i in [1, 2, 3]:
+    #creation df_odd_202i pour chaque année
+        df_Données_Promos_202i = file_to_dataframe(data_path + f"df_Données_Promos_202{i}.csv",",")
 
-    n = df_Données_Promos_2021.shape[0] / 10000 #number minimum of used
-    df_new_odd = keep_used_odd(df_Données_Promos_2021,df_odd,n) #creation of the new tab by keeping only the used promos
+        n = df_Données_Promos_202i.shape[0] / 10000 #number minimum of used
+        df_new_odd = keep_used_odd(df_Données_Promos_202i,df_odd,n) #creation of the new tab by keeping only the used promos
+        
+        save_to_csv_file(df_new_odd,data_path_results + f"odd_202{i}.csv")
     
-    save_to_csv_file(df_new_odd,data_path_results + "odd_2021.csv")
+    #idem sur les trois années
+    df_Données_Promos = file_to_dataframe(data_path + "df_Données_Promos.csv",",")
 
+    n = df_Données_Promos.shape[0] / 10000 #number minimum of used
+    df_new_odd = keep_used_odd(df_Données_Promos,df_odd,n) #creation of the new tab by keeping only the used promos
+    
+    save_to_csv_file(df_new_odd,data_path_results + f"odd.csv")
+
+    """
     #creation df_odd_2022  
     df_Données_Promos_2022 = file_to_dataframe(data_path + "df_Données_Promos_2022.csv",",")
 
@@ -48,24 +58,31 @@ def creation_df_odd() :
     df_new_odd = keep_used_odd(df_Données_Promos_2023,df_odd,n) #creation of the new tab by keeping only the used promos
     
     save_to_csv_file(df_new_odd,data_path_results + "odd_2023.csv")
-
+    """
     return True
 
 
 #Intermediary step we change the df_Données_Promos by adding a column 'TYPE_PROMON' for being easier to understand instead of 'CPROMO'
 
-def create_df_Données_Promos_odd():
+def create_df_Données_Promos_odd(data_path, data_path_results):
 
-    data_path = "/Users/maximecoppa/Desktop/Statapp/Datas_clean/" #where to find the datas used
-    data_path_results = "/Users/maximecoppa/Desktop/Statapp/Datas_clean/" #where to create your new file
+    #data_path = "/Users/maximecoppa/Desktop/Statapp/Datas_clean/" #where to find the datas used
+    #data_path_results = "/Users/maximecoppa/Desktop/Statapp/Datas_clean/" #where to create your new file
 
-    #2021
-    df_Données_Promos_2021 = file_to_dataframe(data_path + "df_Données_Promos_2021.csv",",")
-    df_odd = file_to_dataframe(data_path + "odd_2021.csv")
-    df_Données_Promos_2021_odd = join_dataFrames(df_Données_Promos_2021,df_odd[['CPROMO','TYPE_PROMON']] ,'CPROMO') #We create a new column 'TYPE_PROMON' on df_Données_Promos_2021
+    for i in [1, 2, 3]:
+        #année i
+        df_Données_Promos_202i = file_to_dataframe(data_path + f"df_Données_Promos_202{i}.csv",",")
+        df_odd = file_to_dataframe(data_path + f"odd_202{i}.csv")
+        df_Données_Promos_202i_odd = join_dataFrames(df_Données_Promos_202i,df_odd[['CPROMO','TYPE_PROMON']] ,'CPROMO') #We create a new column 'TYPE_PROMON' on df_Données_Promos_202i
+        save_to_csv_file(df_Données_Promos_202i_odd,data_path_results + f"df_Données_Promos_202{i}_odd.csv") #we save it on your Mac
 
-    save_to_csv_file(df_Données_Promos_2021_odd,data_path_results + "df_Données_Promos_2021_odd.csv") #we save it on your Mac
+    #les 3 années
+    df_Données_Promos = file_to_dataframe(data_path + "df_Données_Promos.csv",",")
+    df_odd = file_to_dataframe(data_path + "odd.csv")
+    df_Données_Promos_odd = join_dataFrames(df_Données_Promos,df_odd[['CPROMO','TYPE_PROMON']] ,'CPROMO') #We create a new column 'TYPE_PROMON' on df_Données_Promos_202i
+    save_to_csv_file(df_Données_Promos_odd,data_path_results + "df_Données_Promos_odd.csv") #we save it on your Mac
 
+    """
     #2022 
     df_Données_Promos_2022 = file_to_dataframe(data_path + "df_Données_Promos_2022.csv",",")
     df_odd = file_to_dataframe(data_path + "odd_2022.csv")
@@ -79,6 +96,7 @@ def create_df_Données_Promos_odd():
     df_Données_Promos_2023_odd = join_dataFrames(df_Données_Promos_2023,df_odd[['CPROMO','TYPE_PROMON']] ,'CPROMO')
 
     save_to_csv_file(df_Données_Promos_2023_odd,data_path_results + "df_Données_Promos_2023_odd.csv")
+    """
 
     return True
 
@@ -87,13 +105,13 @@ def create_df_Données_Promos_odd():
 #2)
 #In this part we create the repartition of the reabos in function of some conditions 
 
-def repartition_reabo_cond():
+def repartition_reabo_cond(data_path, data_path_results):
     """
     This function is used to provide some statistics on the reabo habits
     """
 
-    data_path = "/Users/maximecoppa/Desktop/Statapp/Datas_clean/" #where to find the datas used
-    data_path_results = "/Users/maximecoppa/Desktop/Statapp/Datas_comportement_reabo/" #where to create your new file
+    #data_path = "/Users/maximecoppa/Desktop/Statapp/Datas_clean/" #where to find the datas used
+    #data_path_results = "/Users/maximecoppa/Desktop/Statapp/Datas_comportement_reabo/" #where to create your new file
 
     df_Données_Promos_2021_odd = file_to_dataframe(data_path + "df_Données_Promos_2021_odd.csv") #We open the df_Données_Promos_2021_odd where TYPEPROMO <-> CPROMO
     df_Données_Reabos_2021 = file_to_dataframe(data_path + "df_Données_Reabos_2021.csv")
@@ -135,13 +153,13 @@ def repartition_reabo_cond():
 #3)
 #In this part we focus on the time of reabo between two abonnements
 
-def repartition_reabo():
+def repartition_reabo(data_path, data_path_results):
     """
     This function is used to compute the time of reabo for each type
     """
 
-    data_path = "/Users/maximecoppa/Desktop/Statapp/Datas_clean/" #where to find the datas used
-    data_path_results = "/Users/maximecoppa/Desktop/Statapp/Datas_comportement_reabo/" #where to create your new file
+    #data_path = "/Users/maximecoppa/Desktop/Statapp/Datas_clean/" #where to find the datas used
+    #data_path_results = "/Users/maximecoppa/Desktop/Statapp/Datas_comportement_reabo/" #where to create your new file
 
     df_Données_Promos_2021 = file_to_dataframe(data_path + "df_Données_Promos_2021_odd.csv",",")
     df_Données_Reabos_2021 = file_to_dataframe(data_path + "df_Données_Reabos_2021.csv",",")
@@ -169,10 +187,10 @@ def repartition_reabo():
 #4)
 #In this part we compute the number of time each person  abonned in one year
 
-def taux_consommation():
+def taux_consommation(data_path, data_path_results):
 
-    data_path = "/Users/maximecoppa/Desktop/Statapp/Datas_clean/" #where to find the datas used
-    data_path_results = "/Users/maximecoppa/Desktop/Statapp/Datas_comportement_reabo/" #where to create your new file
+    #data_path = "/Users/maximecoppa/Desktop/Statapp/Datas_clean/" #where to find the datas used
+    #data_path_results = "/Users/maximecoppa/Desktop/Statapp/Datas_comportement_reabo/" #where to create your new file
 
     df_Données_Reabos_2021 = file_to_dataframe(data_path + "df_Données_Reabos_2021.csv",",")
 
