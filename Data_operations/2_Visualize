@@ -1,0 +1,20 @@
+import pandas as pd
+import sys 
+sys.path.append("Data_operations")
+from Tool_Functions.visual import *
+from Tool_Functions.join_data import file_to_dataframe
+
+path = "/Users/clementgadeau/Statapp/StatDescr/"
+
+df = file_to_dataframe(path + "df_repartition_promo.csv")
+
+
+# Supposons que vous ayez un DataFrame appelé 'mon_dataframe' avec les colonnes 'categorie' et 'quantite'
+# Vous pouvez remplacer 'mon_dataframe', 'categorie' et 'quantite' par les noms réels de votre DataFrame et de vos colonnes.
+mon_dataframe = pd.DataFrame({'categorie': ['A', 'B', 'C'], 'quantite': [10, 15, 20]})
+
+# Générer un camembert
+generer_graphique(df, categorie_col = None, quantite_col = None, graphique_type='camembert')
+
+# Générer un histogramme
+generer_graphique(df, categorie_col = None, quantite_col = None, graphique_type='histogramme')
