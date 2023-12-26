@@ -1,11 +1,13 @@
 import pandas as pd
 import math 
+import matplotlib.pyplot as plt 
 import sys 
 sys.path.append("Data_operations")
 
 from Tool_Functions.cleaning_data import file_to_dataframe, save_to_csv_file
 from Tool_Functions.join_data import join_dataFrames, join_dataFrames_outer
 from Tool_Functions.comportment_reabo import *
+from Tool_Functions.visual import *
 
 # 1) 
 # In this part we create a new table Correspondance_promos by putting the promo in groups 
@@ -103,10 +105,10 @@ def create_df_Données_Promos_odd(data_path, data_path_results):
 
 #2)
 #In this part we create the repartition of the reabos in function of some conditions 
-
-def repartition_reabo_cond(data_path, data_path_results):
+def repartition_reabo_cond(data_path, data_path_results, action = ['write']):
     """
-    This function is used to provide some statistics on the reabo habits
+    This function is used to provide some statistics on the reabo habits.
+    action is a list of the actions we need to do.
     """
 
     #data_path = "/Users/maximecoppa/Desktop/Statapp/Datas_clean/" #where to find the datas used
@@ -120,33 +122,33 @@ def repartition_reabo_cond(data_path, data_path_results):
 
     #We compute some statistcs using count_abo_conditions : this functions count the number of an occurence where the datas are group by conditions 
     df_repartition_promo = count_abo_conditions(df_join,['TYPE_PROMON'],'ID_ABONNE')
-    save_to_csv_file(df_repartition_promo,data_path_results + "df_repartition_promo.csv")
-
     df_type_promo_canaldistrib = count_abo_conditions(df_join,['TYPE_PROMON', 'CANAL_DISTRIB'],'ID_ABONNE')
-    save_to_csv_file(df_type_promo_canaldistrib,data_path_results + "type_promo_canaldistrib.csv")
-
     df_month_canaldistrib = count_abo_conditions(df_join,['MONTH', 'YEAR', 'CANAL_DISTRIB'],'ID_ABONNE')
-    save_to_csv_file(df_month_canaldistrib,data_path_results + "month_canaldistrib.csv")
-
     df_repartition_canaldistrib = count_abo_conditions(df_join,['TYPE_PROMON','MONTH', 'YEAR', 'CANAL_DISTRIB'],'ID_ABONNE')
-    save_to_csv_file(df_repartition_canaldistrib,data_path_results + "repartition_canaldistrib.csv")
-
     df_repartition_region = count_abo_conditions(df_join,['TYPE_PROMON','MONTH','YEAR', 'REGION'],'ID_ABONNE')
-    save_to_csv_file(df_repartition_region,data_path_results + "repartition_region.csv")
-
     df_repartition_secteur = count_abo_conditions(df_join,['TYPE_PROMON','MONTH','YEAR', 'SECTEUR'],'ID_ABONNE')
-    save_to_csv_file(df_repartition_secteur,data_path_results + "repartition_secteur.csv")
-
     df_repartition_enseigne = count_abo_conditions(df_join,['TYPE_PROMON','MONTH','YEAR', 'ENSEIGNE'],'ID_ABONNE')
-    save_to_csv_file(df_repartition_enseigne,data_path_results + "repartition_enseigne.csv")
-
     df_repartition_moypay = count_abo_conditions(df_join,['TYPE_PROMON','MONTH','YEAR', 'MOYEN_PAIEMENT'],'ID_ABONNE')
-    save_to_csv_file(df_repartition_moypay,data_path_results + "repartition_moypay.csv")
-
     df_repartition_formule = count_abo_conditions(df_join,['TYPE_PROMON','MONTH','YEAR', 'FORMULE_PREC'],'ID_ABONNE')
-    save_to_csv_file(df_repartition_formule,data_path_results + "repartition_formule.csv")
     
+    nouns = ["df_repartition_promo.csv", "type_promo_canaldistrib.csv", "month_canaldistrib.csv", "repartition_canaldistrib.csv", "repartition_region.csv", "repartition_secteur.csv", "repartition_enseigne.csv", "repartition_moypay.csv", "repartition_formule.csv"]
+    with open(data_path_results + 'Files_names.txt', "w") as file:
+        for element in nouns:
+            file.write(f"{element}\n")
+
+    if 'write' in action:
+        save_to_csv_file(df_repartition_promo,data_path_results + "df_repartition_promo.csv")
+        save_to_csv_file(df_type_promo_canaldistrib,data_path_results + "type_promo_canaldistrib.csv")
+        save_to_csv_file(df_month_canaldistrib,data_path_results + "month_canaldistrib.csv")
+        save_to_csv_file(df_repartition_canaldistrib,data_path_results + "repartition_canaldistrib.csv")
+        save_to_csv_file(df_repartition_region,data_path_results + "repartition_region.csv")
+        save_to_csv_file(df_repartition_secteur,data_path_results + "repartition_secteur.csv")
+        save_to_csv_file(df_repartition_enseigne,data_path_results + "repartition_enseigne.csv")
+        save_to_csv_file(df_repartition_moypay,data_path_results + "repartition_moypay.csv")
+        save_to_csv_file(df_repartition_formule,data_path_results + "repartition_formule.csv")
+
     return True
+
 
 
 #3)
