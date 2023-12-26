@@ -62,19 +62,28 @@ def generer_graphique(df, categorie_col = None, quantite_col = None, graphique_t
     return
 
 
-def graph_repartition(df, value = 'NB_ID_ABONNE', repartition = 'TYPE_PROMON', through = 'time'):
+def graph_repartition(df, value = 'NB_ID_ABONNE', repartition = 'TYPE_PROMON', through = 'DATE'):
     """
     Crée un graph à travers through de la quantité value
     et montre sa répartition selon repartion.
     """
-    if through == 'time':
+    if through == 'DATE':
         # Convertir MONTH et YEAR en datetime pour faciliter la manipulation du temps
-        df['DATE'] = pd.to_datetime(df['MONTH'] + ' ' + df['YEAR'].astype(str))
+        #df['DATE'] = pd.to_datetime(str(df['MONTH']) + ' ' + str(df['YEAR']).astype(str))
+        #df['DATE'] = pd.to_datetime(df['MONTH'].astype(str).str.cat(df['YEAR'].astype(str), sep=' '))
+        df['DATE'] = pd.to_datetime(df['MONTH'].astype(str) + '-' + df['YEAR'].astype(str), format='%m-%Y')
+        #df['DATE'] = df['MONTH'].astype(str) + '-' + df['YEAR'].astype(str).str[-2:]
+        #df = df.sort_values(by='DATE')
+        df['DATE'] = df['DATE'].dt.to_period('M')
+        df['DATE'] = df['DATE'].dt.strftime('%y')
+        df = df.sort_values(by='DATE')
+
+
     # Créer une figure avec deux sous-graphiques
     fig, axes = plt.subplots(2, 1, figsize=(10, 8))
 
     sns.barplot(x=through, y=value, hue=repartition, data=df, ax=axes[0], palette='muted')
-    axes[0].set_title('Répartition de ' + value + ' par' + repartition + 'au fil de ' + through)
+    axes[0].set_title('Répartition de ' + value + ' par ' + repartition + ' selon ' + through)
     axes[0].legend(title=repartition)
 
     return
@@ -88,7 +97,10 @@ def graph_statdescr(data_path, data_path_results, nouns = 'Files_names.txt'):
 
     # Creates a pdf documnent.
     with PdfPages(data_path_results + 'Distribution_report.pdf') as pdf:
+        compteur = 1
         for file in nouns_list:
+            print(compteur)
+            compteur += 1
             df = pd.read_csv(data_path + file,delimiter=',')
             len = df.shape[1]
             
@@ -103,17 +115,23 @@ def graph_statdescr(data_path, data_path_results, nouns = 'Files_names.txt'):
                 print(list)
                 graph_repartition(df, value = 'NB_ID_ABONNE', repartition = list[0], through = list[1])
                 graph_repartition(df, value = 'NB_ID_ABONNE', repartition = list[1], through = list[0])
+                pdf.savefig()
+                plt.close()
 
-            elif len >= 4:
+            elif len > 3:
                 labels = df.columns.tolist()
-                list = [i for i in labels if i not in ['NB_ID_ABONNE', 'MONTH', 'YEAR']]
+                list = [i for i in labels if i not in ['NB_ID_ABONNE', 'MONTH', 'YEAR']] + ['DATE']
+                print(list)
+
                 for i in list:
                     for j in list:
                         if i != j:
-                            graph_repartition(df, value = 'NB_ID_ABONNE', repartition = i, through = 'time')
+                            graph_repartition(df, value = 'NB_ID_ABONNE', repartition = i, through = j)
+                            pdf.savefig()
+                            plt.close()
 
             # Ajuster la disposition
-        plt.tight_layout()
+        #plt.tight_layout()
         pdf.savefig()
         plt.close()
     return 

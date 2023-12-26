@@ -114,8 +114,8 @@ def repartition_reabo_cond(data_path, data_path_results, action = ['write']):
     #data_path = "/Users/maximecoppa/Desktop/Statapp/Datas_clean/" #where to find the datas used
     #data_path_results = "/Users/maximecoppa/Desktop/Statapp/Datas_comportement_reabo/" #where to create your new file
 
-    df_Données_Promos_2021_odd = file_to_dataframe(data_path + "df_Données_Promos_2021_odd.csv") #We open the df_Données_Promos_2021_odd where TYPEPROMO <-> CPROMO
-    df_Données_Reabos_2021 = file_to_dataframe(data_path + "df_Données_Reabos_2021.csv")
+    df_Données_Promos_2021_odd = file_to_dataframe(data_path + "df_Données_Promos_odd.csv") #We open the df_Données_Promos_2021_odd where TYPEPROMO <-> CPROMO
+    df_Données_Reabos_2021 = file_to_dataframe(data_path + "df_Données_Reabos.csv")
     df_join = join_dataFrames(df_Données_Promos_2021_odd,df_Données_Reabos_2021,['ID_ABONNE','DATE_ACTE_REEL']) #We join the tables
 
     df_join = df_mois_annee(df_join,'DATE_ACTE_REEL')
