@@ -64,22 +64,6 @@ def save_to_csv_file(df,filename):
 
 
 
-"""
-df = file_to_dataframe("/Users/maximecoppa/Desktop/Statapp/Datas/Correspondances_Promos_2.csv",";")
-df_Correspondances_Promos = change_dates_all(df,['DEBVAL', 'FINVAL', 'DEBABOMIN', 'DEBABOMAX'])
-save_to_csv_file(df_Correspondances_Promos,"/Users/maximecoppa/Desktop/Statapp/Datas_clean/df_Correspondances_Promos.csv")
-save_to_csv_file(df_Correspondances_Promos,"/Users/maximecoppa/Desktop/Statapp/Datas_head/df_Correspondances_Promos.csv")
-df = file_to_dataframe("/Users/maximecoppa/Desktop/Statapp/Datas/Données_Promos_2021.csv",",")
-df_Données_Promos_2021 = clean_dates(df)
-save_to_csv_file(df_Données_Promos_2021,"/Users/maximecoppa/Desktop/Statapp/Datas_clean/df_Données_Promos_2021.csv")
-save_to_csv_file(df_Données_Promos_2021.head(),"/Users/maximecoppa/Desktop/Statapp/Datas_head/df_Données_Promos_2021_head.csv")
-df = file_to_dataframe("/Users/maximecoppa/Desktop/Statapp/Datas/Données_Reabos_2021.csv",",")
-df_Données_Reabos_2021 = clean_dates(df)
-save_to_csv_file(df_Données_Reabos_2021.head(),"/Users/maximecoppa/Desktop/Statapp/Datas_head/df_Données_Reabos_2021_head.csv")
-"""
-
-
-
 def upload_clean(data_path):
     """
     Download clean files in your data_path
