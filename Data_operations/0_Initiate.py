@@ -10,7 +10,12 @@ data_path_clement = "/Users/clementgadeau/Statapp/CSV files/"
 # Run pour Maxime
 data_path_maxime = "/Users/maximecoppa/Desktop/Statapp_Data/Datas_clean/"
 
+# Run pour antoine 
+
+data_path_a = "/Users/antoine/Documents/ENSAE2A/Codeperso/everything/Statappperso/Ressources"
+
 # Lancez ça pour télécharger les fichiers csv des df nettoyés, et des df concaténés.
+
 upload_clean(data_path_maxime)
 concat_all_years(data_path_maxime)
 
