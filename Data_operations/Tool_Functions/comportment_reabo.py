@@ -130,6 +130,41 @@ def count_abo_conditions(df: pd.DataFrame,columns ,cond):
 
     return df_filtered_groups
 
+def percent_abo_conditions(df: pd.DataFrame,columns ,cond):
+    """
+    This function count the number of elements of the condition and group by
+    the column 
+    """
+    series = df.groupby(columns)[cond].count() # Group by specified columns and count occurrences of the condition
+    df_filtered_groups = series.reset_index(name = 'POURCENTAGE_' + cond) #Series into DataFrames
+
+    df_filtered_groups = df_filtered_groups.sort_values(by = 'POURCENTAGE_' + cond, ascending=False) # Sort the DataFrame by the count column in descending order
+
+    n = df_filtered_groups['POURCENTAGE_' + cond].sum()
+    df_filtered_groups['POURCENTAGE_' + cond] = df_filtered_groups['POURCENTAGE_' + cond] / n * 100
+
+    df_filtered_groups = df_filtered_groups[df_filtered_groups['POURCENTAGE_' + cond] >= 0.01]
+
+    return df_filtered_groups
+
+
+def percent_abo_conditions_group(df,columns,cond):
+    """
+    This function count the percentages of elements of the condition and group them by
+    the column 
+    """
+    df_grouped = count_abo_conditions(df,columns,cond) 
+    df_grouped = df_grouped.groupby(columns)['NB_' + cond].sum()
+    df_percentage = df_grouped / df_grouped.groupby(columns[0]).transform('sum') * 100
+
+    result_df = df_percentage.reset_index(name='Percentage_' + cond)
+
+    result_df = result_df[result_df['Percentage_' + cond] >= 0.01]
+
+    return result_df
+
+
+
 def mean_time_reabo(df,columns,cond):
     """
     This function calculate the mean of the condition and group by

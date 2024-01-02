@@ -85,9 +85,15 @@ def create_df_Données_Reabos_odd_all(data_path, data_path_results):
 
     df_Données_Reabos_odd = df_Données_Reabos_odd.drop(columns = ["REABO_APRES_ECHEANCE","CPROMO","SECTEUR","PAYS","NUMDIST_PARTENAIRE","NOM_PARTENAIRE","NUMDIST_POINT_DE_VENTE","NOM_POINT_DE_VENTE"])
 
+    end_abo = 'DATE_FIN_ABO_PREC'
+    date_reabo = 'DATE_ACTE_REEL'
+
+    df_Données_Reabos_odd = time_reabo_columns(df_Données_Reabos_odd,end_abo,date_reabo)
+    
     save_to_csv_file(df_Données_Reabos_odd,data_path_results + "df_Données_Reabos_odd.csv")
 
     return True
+
 
 
 #2)
@@ -133,6 +139,61 @@ def repartition_reabo_cond(data_path, data_path_results, action = ['write']):
 
     return True
 
+def stats_percentage_one_cond(data_path,data_path_results):
+    
+    #open_new df_données_Reabos_odd
+    df_join = file_to_dataframe(data_path + "df_Données_Reabos_odd.csv")
+
+    
+    #We compute some statistcs using count_abo_conditions : this functions count the number of an occurence where the datas are group by conditions 
+    df_repartition_promo = percent_abo_conditions(df_join,['TYPE_PROMON'],'ID_ABONNE')
+    df_repartition_canaldistrib = percent_abo_conditions(df_join,['CANAL_DISTRIB'],'ID_ABONNE')
+    df_repartition_region = percent_abo_conditions(df_join,['REGION'],'ID_ABONNE')
+    df_repartition_enseigne = percent_abo_conditions(df_join,['ENSEIGNE'],'ID_ABONNE')
+    df_repartition_moypay = percent_abo_conditions(df_join,['MOYEN_PAIEMENT'],'ID_ABONNE')
+    df_repartition_formule = percent_abo_conditions(df_join,['FORMULE_PREC'],'ID_ABONNE')
+
+    save_to_csv_file(df_repartition_promo,data_path_results + "repartition_promo.csv")
+    save_to_csv_file(df_repartition_canaldistrib,data_path_results + "repartition_canaldistrib.csv")
+    save_to_csv_file(df_repartition_region,data_path_results + "repartition_region.csv")
+    save_to_csv_file(df_repartition_enseigne,data_path_results + "repartition_enseigne.csv")
+    save_to_csv_file(df_repartition_moypay,data_path_results + "repartition_moypay.csv")
+    save_to_csv_file(df_repartition_formule,data_path_results + "repartition_formule_prec.csv")
+    
+    return True
+
+def stats_percentage_multiple_conds(data_path,data_path_results):
+    
+    #open_new df_données_Reabos_odd
+    df_join = file_to_dataframe(data_path + "df_Données_Reabos_odd.csv")
+
+    
+    #We compute some statistcs using count_abo_conditions : this functions count the number of an occurence where the datas are group by conditions 
+    df_repartition_canaldistrib = percent_abo_conditions_group(df_join,['TYPE_PROMON','CANAL_DISTRIB'],'ID_ABONNE')
+    df_repartition_region = percent_abo_conditions_group(df_join,['TYPE_PROMON','REGION'],'ID_ABONNE')
+    df_repartition_enseigne = percent_abo_conditions_group(df_join,['TYPE_PROMON','ENSEIGNE'],'ID_ABONNE')
+    df_repartition_moypay = percent_abo_conditions_group(df_join,['TYPE_PROMON','MOYEN_PAIEMENT'],'ID_ABONNE')
+    df_repartition_formule = percent_abo_conditions_group(df_join,['TYPE_PROMON','FORMULE_PREC'],'ID_ABONNE')
+
+    save_to_csv_file(df_repartition_canaldistrib,data_path_results + "promo_" + "repartition_canaldistrib.csv")
+    save_to_csv_file(df_repartition_region,data_path_results +  "promo_" +"repartition_region.csv")
+    save_to_csv_file(df_repartition_enseigne,data_path_results + "promo_" + "repartition_enseigne.csv")
+    save_to_csv_file(df_repartition_moypay,data_path_results  + "promo_"+ "repartition_moypay.csv")
+    save_to_csv_file(df_repartition_formule,data_path_results + "promo_" + "repartition_formule_prec.csv")
+    
+    return True
+
+def repartition_time_reabo(data_path,data_path_results):
+    """
+    Create a data frame where the reabo are classed by time_reabo
+    
+    """
+    df = file_to_dataframe(data_path + "df_Données_Reabos_odd.csv")
+
+    df_repartition_time_reabo = percent_abo_conditions(df,'DELAI_REABO','ID_ABONNE')
+    save_to_csv_file(df_repartition_time_reabo,data_path_results + "repartition_time_reabo.csv")
+
+    return True
 
 
 #3)

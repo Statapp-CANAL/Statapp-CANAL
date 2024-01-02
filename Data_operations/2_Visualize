@@ -3,18 +3,18 @@ import sys
 sys.path.append("Data_operations")
 from Tool_Functions.visual import *
 from Tool_Functions.test_comportment_reabo import *
+from Tool_Functions.comportment_reabo import *
 from Tool_Functions.join_data import file_to_dataframe
 
-data_path = "/Users/clementgadeau/Statapp/CSV files/"
-path = "/Users/clementgadeau/Statapp/StatDescr/"
-results_path = "/Users/clementgadeau/Statapp/Modélisation/"
+data_path_clement = "/Users/clementgadeau/Statapp/CSV files/"
+path_clement = "/Users/clementgadeau/Statapp/StatDescr/"
+results_path_clement = "/Users/clementgadeau/Statapp/Modélisation/"
+
+data_path_maxime = "/Users/maximecoppa/Desktop/Statapp_Data/Datas_clean/"
+data_path_results = "/Users/maximecoppa/Desktop/Statapp_Data/Datas_stats/"
 
 """
 df = file_to_dataframe(path + "df_repartition_promo.csv")
-
-# Supposons que vous ayez un DataFrame appelé 'mon_dataframe' avec les colonnes 'categorie' et 'quantite'
-# Vous pouvez remplacer 'mon_dataframe', 'categorie' et 'quantite' par les noms réels de votre DataFrame et de vos colonnes.
-mon_dataframe = pd.DataFrame({'categorie': ['A', 'B', 'C'], 'quantite': [10, 15, 20]})
 
 # Générer un camembert
 generer_graphique(df, categorie_col = None, quantite_col = None, graphique_type='camembert')
@@ -23,4 +23,15 @@ generer_graphique(df, categorie_col = None, quantite_col = None, graphique_type=
 generer_graphique(df, categorie_col = None, quantite_col = None, graphique_type='histogramme')
 """
 #repartition_reabo_cond(data_path, path)
-graph_statdescr(path, results_path, nouns = 'Files_names.txt')
+#graph_statdescr(path_clement, results_path_clement, nouns = 'Files_names.txt')
+
+#stats_percentage_one_cond(data_path_maxime,data_path_results)
+#stats_percentage_multiple_conds(data_path_maxime,data_path_results)
+
+
+# Générer un camembert
+#generer_graphique(df, categorie_col = None, quantite_col = None, graphique_type='camembert')
+#generer_graphique(df, categorie_col = None, quantite_col = None, graphique_type='histogramme')
+
+
+repartition_time_reabo(data_path_maxime,data_path_results)
