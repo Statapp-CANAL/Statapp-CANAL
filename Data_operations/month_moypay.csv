@@ -1,0 +1,70 @@
+MONTH,YEAR,MOYEN_PAIEMENT,NB_ID_ABONNE
+12,2022,Cash,930934
+12,2021,Cash,698472
+3,2023,Cash,632197
+9,2023,Cash,609173
+6,2023,Cash,607146
+1,2021,Cash,593472
+11,2022,Cash,587919
+4,2023,Cash,572970
+6,2022,Cash,538610
+1,2022,Cash,473472
+4,2022,Cash,456090
+7,2022,Cash,424764
+1,2023,Cash,409802
+11,2021,Cash,357476
+7,2021,Cash,353119
+2,2023,Cash,350581
+5,2023,Cash,343194
+2,2022,Cash,335213
+5,2022,Cash,322631
+8,2022,Cash,303106
+8,2023,Cash,298954
+7,2023,Cash,281811
+6,2021,Cash,281679
+5,2021,Cash,275309
+10,2022,Cash,246090
+3,2022,Cash,245097
+9,2022,Cash,234492
+3,2021,Cash,220030
+2,2021,Cash,216307
+4,2021,Cash,213239
+9,2021,Cash,203786
+10,2021,Cash,199270
+8,2021,Cash,181836
+10,2023,Cash,178645
+12,2021,Prélèvement RIB,1728
+12,2022,Prélèvement RIB,1361
+6,2022,Prélèvement RIB,969
+11,2022,Prélèvement RIB,741
+1,2022,Prélèvement RIB,598
+5,2022,Prélèvement RIB,595
+7,2022,Prélèvement RIB,510
+6,2023,Prélèvement RIB,462
+2,2022,Prélèvement RIB,458
+4,2022,Prélèvement RIB,456
+1,2023,Prélèvement RIB,430
+10,2022,Prélèvement RIB,406
+8,2022,Prélèvement RIB,404
+2,2023,Prélèvement RIB,322
+3,2022,Prélèvement RIB,232
+5,2023,Prélèvement RIB,207
+7,2023,Prélèvement RIB,204
+8,2023,Prélèvement RIB,157
+3,2023,Prélèvement RIB,155
+5,2023,Corporate  / Groupement Individuels,63
+6,2023,Corporate  / Groupement Individuels,60
+10,2023,Prélèvement RIB,24
+9,2023,Prélèvement RIB,14
+4,2023,Corporate  / Groupement Individuels,12
+9,2022,Prélèvement RIB,11
+7,2023,Corporate  / Groupement Individuels,7
+11,2021,Prélèvement RIB,7
+8,2021,Prélèvement RIB,5
+1,2021,Prélèvement RIB,4
+10,2021,Prélèvement RIB,4
+6,2021,Prélèvement RIB,4
+4,2023,Prélèvement RIB,4
+8,2023,Corporate  / Groupement Individuels,3
+9,2023,Corporate  / Groupement Individuels,1
+9,2021,Prélèvement RIB,1
