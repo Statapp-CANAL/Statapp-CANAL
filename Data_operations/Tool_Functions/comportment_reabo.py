@@ -86,7 +86,11 @@ def apply_conditions(row):
     elif (row[carticle][:2] == 'EV') & (row[nb_days] == 21) :
         return 'ODD 21 jours EV+ '
     elif (row[carticle][:2] == 'TC') & (row[nb_days] == 21):
-        return 'ODD 21 jours EV+ '
+        return 'ODD 21 jours TC'
+    elif (row[carticle][:2] == 'EV') & (row[nb_days] == 30) | (row[nb_days] == 28):
+        return 'ODD 30 jours EV+'
+    elif (row[carticle][:2] == 'TC') & (row[nb_days] == 30) | (row[nb_days] == 28):
+        return 'ODD 30 jours TC'
     else: 
         return 'Autres'
         
@@ -170,7 +174,7 @@ def mean_time_reabo(df,columns,cond):
     This function calculate the mean of the condition and group by
     the column 
     """
-    series = df.groupby(columns)[cond].mean() # Group by specified columns and calculate the mean of the condition
+    series = df.groupby(columns)[cond].mean().round(3) # Group by specified columns and calculate the mean of the condition
     df_filtered_groups = series.reset_index(name = 'MEAN_' + cond)
 
     df_filtered_groups = df_filtered_groups.sort_values(by = 'MEAN_' + cond, ascending=False) # Sort the DataFrame by the mean column in descending order
