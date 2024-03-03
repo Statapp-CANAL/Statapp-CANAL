@@ -122,3 +122,12 @@ def create_df_Données_Reabos_odd_all(data_path, data_path_results):
     save_to_csv_file(df_Données_Reabos_odd, data_path_results + "df_Données_Reabos_odd.csv")
 
     return True
+
+
+def enlever_abos(data_path, data_path_results):
+    df = file_to_dataframe(data_path + "df_Données_Reabos_odd.csv")
+    df['NB_APPARITIONS'] = df.groupby('ID_ABONNE')['ID_ABONNE'].transform('count')
+    df_new = df[(df['NB_APPARITIONS'] < 34) & (df['NB_APPARITIONS'] > 2)]
+    save_to_csv_file(df_new, data_path_results + 'df_Données_Reabos_odd_new.csv')
+     
+    return True
