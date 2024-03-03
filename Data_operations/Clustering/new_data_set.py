@@ -103,3 +103,34 @@ def create_new_data_set(data_path, data_path_results):
     save_to_csv_file(df, data_path_results + "new_datas.csv")
 
     return True
+
+
+def ajouter_differences(df):
+    
+    promo_types = [col for col in df.columns if 'MEAN_TIME' in col and col != 'MOY_DELAI']
+    
+    for promo in promo_types:
+        new_col_name = promo + '_DIFF'
+        df[new_col_name] = df[promo] - df['MOY_DELAI']
+
+    return df
+
+def create_new_data_set_diff(data_path, data_path_results):
+
+    df_Données_Reabos_odd = file_to_dataframe(data_path + "df_Donnees_Reabos_odd_new.csv")
+    df = file_to_dataframe(data_path + "new_datas_new.csv")
+    delai = df_Données_Reabos_odd[['ID_ABONNE', 'MOY_DELAI']]
+    delai = delai.drop_duplicates(subset='ID_ABONNE', keep='first')
+    df2 = join_dataFrames(df, delai, 'ID_ABONNE')
+    df2 = join_dataFrames(df, delai, "ID_ABONNE")
+    ajouter_differences(df2)
+    
+    save_to_csv_file(df2, data_path_results + "new_datas_diff.csv")
+
+    return True
+
+
+
+
+
+        
