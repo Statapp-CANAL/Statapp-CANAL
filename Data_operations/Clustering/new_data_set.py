@@ -105,16 +105,6 @@ def create_new_data_set(data_path, data_path_results):
     return True
 
 
-def ajouter_differences(df):
-    
-    promo_types = [col for col in df.columns if 'MEAN_TIME' in col and col != 'MOY_DELAI']
-    
-    for promo in promo_types:
-        new_col_name = promo + '_DIFF'
-        df[new_col_name] = df[promo] - df['MOY_DELAI']
-
-    return df
-
 def create_new_data_set_diff(data_path, data_path_results):
 
     df_Données_Reabos_odd = file_to_dataframe(data_path + "df_Donnees_Reabos_odd_new.csv")

@@ -131,3 +131,15 @@ def enlever_abos(data_path, data_path_results):
     save_to_csv_file(df_new, data_path_results + 'df_Données_Reabos_odd_new.csv')
      
     return True
+
+
+
+def ajouter_differences(df):
+    
+    promo_types = [col for col in df.columns if 'MEAN_TIME' in col and col != 'MOY_DELAI']
+    
+    for promo in promo_types:
+        new_col_name = promo + '_DIFF'
+        df[new_col_name] = df[promo] - df['MOY_DELAI']
+
+    return df
