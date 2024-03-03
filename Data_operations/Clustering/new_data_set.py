@@ -203,3 +203,36 @@ def create_new_data_set_n_month_pourc(data_path, data_path_results):
     save_to_csv_file(new_data_set_pourc, data_path + "df_n_months_ODD_%.csv")
 
     return True
+
+
+def create_new_data_set_n_fidelite(data_path, data_path_results):
+    """
+    Creates a new dataset 'new_data_set' from 'df_Données_Reabos_odd' dataframe where the columns are the 
+    TYPE_PROMON
+    """
+
+    # Load 'df_Données_Reabos_odd' dataframe
+    df = file_to_dataframe(data_path + "df_Donnees_Reabos_odd_new.csv")
+    df['DATE_ACTE_REEL'] = pd.to_datetime(df['DATE_ACTE_REEL'])
+    df['MONTH'] = df['DATE_ACTE_REEL'].dt.month
+
+    # Perform statistical analysis on 'df_Données_Reabos_odd' dataframe
+    df2 = count_abo_conditions(df, ['ID_ABONNE', 'STATUT_FIN_M_MOINS_1'], 'DATE_ACTE_REEL')
+
+    # Create a pivot table from 'df' dataframe we exchange the lines and columns
+    new_data_set = df2.pivot_table(index='ID_ABONNE', columns='STATUT_FIN_M_MOINS_1', values='NB_DATE_ACTE_REEL')
+
+    # Reset index of the pivot table
+    new_data_set = new_data_set.reset_index()
+
+    # Replace NaN values with 0
+    new_data_set.fillna(0, inplace=True)
+
+    # Convert floating-point values to integers
+    new_data_set = new_data_set.astype(int)
+
+    # Save 'new_data_set' dataframe to a CSV file
+    save_to_csv_file(new_data_set, data_path_results + "df_n_fidélité_ODD.csv")
+
+    return True
+        
