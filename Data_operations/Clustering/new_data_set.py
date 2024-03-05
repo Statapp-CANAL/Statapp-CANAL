@@ -127,8 +127,8 @@ def ajouter_differences(df):
 
 def create_new_data_set_diff(data_path, data_path_results):
 
-    df_Données_Reabos_odd = file_to_dataframe(data_path + "df_Donnees_Reabos_odd_new.csv")
-    df = file_to_dataframe(data_path + "new_datas_new.csv")
+    df_Données_Reabos_odd = file_to_dataframe(data_path + "df_Données_Reabos_odd_new.csv")
+    df = file_to_dataframe(data_path + "new_datas.csv")
     delai = df_Données_Reabos_odd[['ID_ABONNE', 'MOY_DELAI']]
     delai = delai.drop_duplicates(subset='ID_ABONNE', keep='first')
     df2 = join_dataFrames(df, delai, 'ID_ABONNE')
@@ -139,6 +139,36 @@ def create_new_data_set_diff(data_path, data_path_results):
 
     return True
 
+def create_new_data_set_diff_p(data_path, data_path_results):
+
+    df_Données_Reabos_odd = file_to_dataframe(data_path + "df_Données_Reabos_odd_new.csv")
+    df = file_to_dataframe(data_path + "new_datas_join.csv")
+    delai = df_Données_Reabos_odd[['ID_ABONNE', 'MOY_DELAI', 'NB_APPARITIONS']]
+    delai = delai.drop_duplicates(subset='ID_ABONNE', keep='first')
+    
+    df2 = join_dataFrames(df, delai, 'ID_ABONNE')
+
+    ajouter_differences(df2)
+
+    df2 = df2.drop(columns= ['Autres_MEAN_TIME', 'ODD 15 jours EV+_MEAN_TIME', 
+                             'ODD 15 jours TC_MEAN_TIME',
+                             'ODD 21 jours TC_MEAN_TIME', 'ODD 30 jours EV+_MEAN_TIME',
+                             'ODD 30 jours TC_MEAN_TIME','ODD 7 jours autre que SG_MEAN_TIME',
+                             'Semaine genéreuse_MEAN_TIME'])
+    
+    col_recensement = ['Autres_n_REABOS', 'ODD 15 jours EV+_n_REABOS',
+                        'ODD 15 jours TC_n_REABOS',
+                        'ODD 21 jours TC_n_REABOS', 'ODD 30 jours EV+_n_REABOS',
+                        'ODD 30 jours TC_n_REABOS','ODD 7 jours autre que SG_n_REABOS',
+                          'Semaine genéreuse_n_REABOS']
+
+    for col in col_recensement:
+        df2[col] = (df2[col] / df2['NB_APPARITIONS']) * 100
+
+    save_to_csv_file(df2, data_path_results + "new_datas_diff_%.csv")
+
+    return True
+
 def create_new_data_set_n_month(data_path, data_path_results):
     """
     Creates a new dataset 'new_data_set' from 'df_Données_Reabos_odd' dataframe where the columns are the 
@@ -146,7 +176,7 @@ def create_new_data_set_n_month(data_path, data_path_results):
     """
 
     # Load 'df_Données_Reabos_odd' dataframe
-    df = file_to_dataframe(data_path + "df_Donnees_Reabos_odd_new.csv")
+    df = file_to_dataframe(data_path + "df_Données_Reabos_odd_new.csv")
     df['DATE_ACTE_REEL'] = pd.to_datetime(df['DATE_ACTE_REEL'])
     df['MONTH'] = df['DATE_ACTE_REEL'].dt.month
 
@@ -178,7 +208,7 @@ def create_new_data_set_n_month_pourc(data_path, data_path_results):
     """
 
     # Load 'df_Données_Reabos_odd' dataframe
-    df = file_to_dataframe(data_path + "df_Donnees_Reabos_odd_new.csv")
+    df = file_to_dataframe(data_path + "df_Données_Reabos_odd_new.csv")
     df['DATE_ACTE_REEL'] = pd.to_datetime(df['DATE_ACTE_REEL'])
     df['MONTH'] = df['DATE_ACTE_REEL'].dt.month
 
@@ -212,7 +242,7 @@ def create_new_data_set_n_fidelite(data_path, data_path_results):
     """
 
     # Load 'df_Données_Reabos_odd' dataframe
-    df = file_to_dataframe(data_path + "df_Donnees_Reabos_odd_new.csv")
+    df = file_to_dataframe(data_path + "df_Données_Reabos_odd_new.csv")
     df['DATE_ACTE_REEL'] = pd.to_datetime(df['DATE_ACTE_REEL'])
     df['MONTH'] = df['DATE_ACTE_REEL'].dt.month
 
