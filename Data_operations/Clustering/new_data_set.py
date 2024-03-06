@@ -266,3 +266,45 @@ def create_new_data_set_n_fidelite(data_path, data_path_results):
 
     return True
         
+
+
+def correct_non_overlapping_subscriptions(df, window_months=12):
+    # Ensure the dataframe is sorted by ID_ABONNE and DATE_ACTE_REEL
+    df.sort_values(['ID_ABONNE', 'DATE_ACTE_REEL'], inplace=True)
+
+    # Initialize an empty dictionary to store the results
+    results = {}
+
+    for id_abonne, group in df.groupby('ID_ABONNE'):
+        subscriptions = []
+        start_date = None
+        count = 0
+
+        for _, row in group.iterrows():
+            if start_date is None:
+                # Start of a new 12-month period
+                start_date = row['DATE_ACTE_REEL']
+                count = 1
+            elif (row['DATE_ACTE_REEL'] - start_date).days / 30 <= window_months:
+                # Still within the 12-month window
+                count += 1
+            else:
+                # Outside the 12-month window, start a new period
+                subscriptions.append(count)
+                start_date = row['DATE_ACTE_REEL']
+                count = 1
+
+        # Append the count for the last window
+        subscriptions.append(count)
+
+        # Store the list of counts for this ID_ABONNE
+        results[id_abonne] = subscriptions
+
+
+    return results
+
+"""
+liste_fidelite = correct_non_overlapping_subscriptions(df)
+results_df = pd.DataFrame(list(liste_fidelite.items()), columns=['ID_ABONNE', 'NOMBRE_ABONNEMENTS'])
+save_to_csv_file(results_df, path_antoine + 'liste_fidelite.csv')
+"""
