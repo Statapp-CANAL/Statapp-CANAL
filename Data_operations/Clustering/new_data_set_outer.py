@@ -81,6 +81,6 @@ def new_datas_diff_outer(data_path, data_path_results):
                         'ODD 30 jours TC_n_REABOS','ODD 7 jours autre que SG_n_REABOS',
                           'Semaine genéreuse_n_REABOS', 'noODD_n_REABOS'])
 
-   save_to_csv_file(df, data_path_results + 'new_datas_diff_outer')
+   save_to_csv_file(df, data_path_results + 'new_datas_diff_outer.csv')
 
    return True
