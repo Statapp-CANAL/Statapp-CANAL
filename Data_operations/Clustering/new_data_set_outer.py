@@ -60,7 +60,6 @@ def new_datas_diff_outer(data_path, data_path_results):
 
    columns_delai = [col for col in df.columns if col.endswith('TIME')]
 
-
    df[columns_delai] = df[columns_delai].replace([np.inf, -np.inf], np.nan)
 
 
