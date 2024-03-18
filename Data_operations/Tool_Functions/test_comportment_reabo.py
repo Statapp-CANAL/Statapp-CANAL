@@ -247,3 +247,37 @@ def taux_consommation(data_path, data_path_results):
 
     return True
 
+def create_df_Données_Promos_odd_all_outer(data_path, data_path_results):
+    """
+    This function create df_Données_Promos_odd for the dataFrame with all years
+    """
+    
+    df_Données_Promos = file_to_dataframe(data_path + "df_Données_Promos.csv",",")
+    df_odd = file_to_dataframe(data_path + "odd.csv", ",")
+    df_Données_Promos_odd = join_dataFrames_outer(df_Données_Promos,df_odd[['CPROMO','TYPE_PROMON']] ,'CPROMO')
+    df_Données_Promos_odd = df_Données_Promos_odd[df_Données_Promos_odd['TYPE_PROMON'].isna()]
+    save_to_csv_file(df_Données_Promos_odd,data_path_results + "df_Données_Promos_odd_outer.csv") #we save it on your Mac
+    
+    return True
+
+
+def create_df_Données_Reabos_odd_all_outer(data_path, data_path_results):
+    """
+    This function create df_Données_Reabos_odd with all years of Reabos which corresponds to a use of Promo
+    and then we drop some unused column
+    """
+    df_Données_Promos_odd = file_to_dataframe(data_path +"df_Données_Promos_odd_outer.csv" )
+    df_Données_Reabos = file_to_dataframe(data_path + "df_Données_Reabos.csv")
+    df_Données_Reabos_odd = join_dataFrames(df_Données_Promos_odd,df_Données_Reabos,['ID_ABONNE','DATE_ACTE_REEL'])
+
+    df_Données_Reabos_odd = df_Données_Reabos_odd.drop(columns = ["REABO_APRES_ECHEANCE","CPROMO","SECTEUR","PAYS","NUMDIST_PARTENAIRE","NOM_PARTENAIRE","NUMDIST_POINT_DE_VENTE","NOM_POINT_DE_VENTE"])
+
+    end_abo = 'DATE_FIN_ABO_PREC'
+    date_reabo = 'DATE_ACTE_REEL'
+
+    df_Données_Reabos_odd = time_reabo_columns(df_Données_Reabos_odd,end_abo,date_reabo)
+    df_Données_Reabos_odd = df_Données_Reabos_odd[df_Données_Reabos_odd['TYPE_PROMON'].isna()]
+    
+    save_to_csv_file(df_Données_Reabos_odd,data_path_results + "df_Données_Reabos_odd_outer.csv")
+
+    return True
