@@ -308,3 +308,13 @@ liste_fidelite = correct_non_overlapping_subscriptions(df)
 results_df = pd.DataFrame(list(liste_fidelite.items()), columns=['ID_ABONNE', 'NOMBRE_ABONNEMENTS'])
 save_to_csv_file(results_df, path_antoine + 'liste_fidelite.csv')
 """
+
+
+def huge_data_set(data_path, data_path_results):
+    df1 = file_to_dataframe(data_path + "new_datas_diff_%.csv")
+    df2 = file_to_dataframe(data_path + "df_n_months_ODD.csv")
+    df3 = file_to_dataframe(data_path + "liste_fidelite.csv")
+    df = join_dataFrames(df1, df2, 'ID_ABONNE')
+    dfr = join_dataFrames(df, df3, 'ID_ABONNE')
+    save_to_csv_file(dfr, data_path_results + 'fusion_table.csv')
+    return True
