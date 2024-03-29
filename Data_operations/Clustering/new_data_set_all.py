@@ -389,8 +389,7 @@ def correct_non_overlapping_subscriptions(df, window_months=12):
 
 """ 
 
-def correct_non_overlapping_subscriptions(data_path, window_months=12):
-    df = file_to_dataframe(data_path + "df_Données_Reabos_odd_new_v3.csv")
+def correct_non_overlapping_subscriptions(df, window_months=12):
     # Ensure the dataframe is sorted by ID_ABONNE and DATE_ACTE_REEL
     df.sort_values(['ID_ABONNE', 'DATE_ACTE_REEL'], inplace=True)
     df['DATE_ACTE_REEL'] = pd.to_datetime(df['DATE_ACTE_REEL'])
@@ -422,11 +421,9 @@ def correct_non_overlapping_subscriptions(data_path, window_months=12):
 
         # Store the list of counts for this ID_ABONNE
         results[id_abonne] = subscriptions
-        results_df = pd.DataFrame(list(results.items()), columns=['ID_ABONNE', 'NOMBRE_ABONNEMENTS'])
-        save_to_csv_file(results_df, data_path + 'liste_fidelite_v4.csv')
+        
 
-
-    return True
+    return results
 
 
 def huge_data_set(data_path, data_path_results):
