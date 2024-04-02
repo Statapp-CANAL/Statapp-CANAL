@@ -8,12 +8,15 @@ from sklearn.metrics import silhouette_score
 import matplotlib.pyplot as plt
 import math 
 import numpy as np
-from sklearn import StandardScaler
+from sklearn.preprocessing import StandardScaler
  
 data_path = "/Users/maximecoppa/Desktop/Statapp_Data/Datas/"
 data_path_df = data_path + 'fusion_table_score_v3.csv'
 
-df = file_to_dataframe(data_path_df)
+path_antoine = "/Users/antoine/Documents/ENSAE2A/Codeperso/everything/Statappperso/Ressources/"
+data_path_a = path_antoine + 'fusion_table_score_v1.csv'
+
+df = file_to_dataframe(data_path_a)
 print(df.columns)
 
 scaler = StandardScaler()
