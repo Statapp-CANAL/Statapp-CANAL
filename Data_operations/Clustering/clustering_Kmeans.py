@@ -8,10 +8,8 @@ from sklearn.metrics import silhouette_score
 import matplotlib.pyplot as plt
 import math 
 import numpy as np
-
+from sklearn import StandardScaler
  
-
-
 data_path = "/Users/maximecoppa/Desktop/Statapp_Data/Datas/"
 data_path_df = data_path + 'fusion_table_score_v3.csv'
 
