@@ -281,3 +281,14 @@ def create_df_Données_Reabos_odd_all_outer(data_path, data_path_results):
     save_to_csv_file(df_Données_Reabos_odd,data_path_results + "df_Données_Reabos_odd_outer.csv")
 
     return True
+
+
+def ajout_anciennete(data_path, data_path_results):
+    df = file_to_dataframe(data_path + 'df_Données_Reabos_odd_new_v2.csv')
+    df['DATE_ACTE_REEL'] = pd.to_datetime(df['DATE_ACTE_REEL'])
+    date_plus_ancienne = df.groupby('ID_ABONNE')['DATE_ACTE_REEL'].min()
+    date_reference = pd.to_datetime('2023-10-30')
+    df['PREMIERE_APPARITION'] = df['ID_ABONNE'].map(date_plus_ancienne)
+    df['ANCIENNETE'] = (date_reference - df['PREMIERE_APPARITION']).dt.days
+    save_to_csv_file(df, data_path_results + 'df_Données_Reabos_odd_final.csv')
+    return True

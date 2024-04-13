@@ -195,3 +195,4 @@ def mean_empty_col(df,column,cond):
     df_filtered_groups = df_filtered_groups.sort_values(by = 'MEAN_IS_NA' + cond, ascending=False)   # Sort the DataFrame by the mean column in descending order
 
     return df_filtered_groups
+
