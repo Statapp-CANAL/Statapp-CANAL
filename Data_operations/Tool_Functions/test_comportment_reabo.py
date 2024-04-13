@@ -292,3 +292,13 @@ def ajout_anciennete(data_path, data_path_results):
     df['ANCIENNETE'] = (date_reference - df['PREMIERE_APPARITION']).dt.days
     save_to_csv_file(df, data_path_results + 'df_Données_Reabos_odd_final.csv')
     return True
+
+
+def ajout_anciennete_total(data_path, data_path_results):
+    df = file_to_dataframe(data_path + 'fusion_table_score_v1.csv')
+    df1 = file_to_dataframe(data_path 'df_Données_Reabos_odd_final.csv')
+    df2 = join_dataFrames(df1[['ID_ABONNE', 'ANCIENNETE']], df, 'ID_ABONNE')
+    df2 = df2.drop_duplicates(subset=['ID_ABONNE'])
+    save_to_csv_file(df2, data_path_results + 'fusion_table_final.csv')
+    return True
+
