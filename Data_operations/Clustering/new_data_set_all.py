@@ -12,7 +12,34 @@ data_path =
 data_path_results = 
 """
 
+def creation_df_odd(data_path, data_path_results):
+    """
+    Creates a new dataframe 'df_odd' containing all the ODD promotions classified by their type.
+    """
 
+    # Load 'df_Correspondances_Promos' dataframe
+    df_Correspondances_Promos = file_to_dataframe(data_path + "df_Correspondances_Promos.csv", ",") 
+
+    # Filter 'df_Correspondances_Promos' to create 'df_odd' dataframe with only ODD promotions
+    df_odd = df_filter_condition(df_Correspondances_Promos, 'TYPE_PROMO', 'ODD')
+
+    # Create a new column 'TYPE_PROMON' based on conditions
+    df_odd['TYPE_PROMON'] = create_new_column(df_odd, apply_conditions)
+
+    # Load 'df_Données_Promos' dataframe
+    df_Données_Promos = file_to_dataframe(data_path + "df_Données_Promos.csv", ",")
+
+    # Calculate the minimum number of used promotions
+    n = df_Données_Promos.shape[0] / 10000
+
+    # Create 'df_new_odd' dataframe by keeping only used promotions
+    df_new_odd = keep_used_odd(df_Données_Promos, df_odd, n)
+    df_new_odd = df_new_odd.drop_duplicates()
+
+    # Save 'df_new_odd' dataframe to a CSV file
+    save_to_csv_file(df_new_odd, data_path_results + "odd.csv")
+
+    return True
 
 def create_df_Données_Promos_odd_v2(data_path, data_path_results):
 
