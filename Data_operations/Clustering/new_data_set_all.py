@@ -461,3 +461,16 @@ def huge_data_set(data_path, data_path_results):
     dfr = join_dataFrames(df, df3, 'ID_ABONNE')
     save_to_csv_file(dfr, data_path_results + 'fusion_table_v3.csv')
     return True
+
+
+def table_finale(antoine, antoine_results):
+   df = file_to_dataframe(antoine + "df_all_clusters.csv")
+   df1 = file_to_dataframe(antoine + "fusion_table_final.csv")
+   df2 = file_to_dataframe(antoine + "df_Données_Reabos_odd_final.csv")
+   dff = pd.merge(df, df2[['ID_ABONNE','PREMIERE_APPARITION', 'ANCIENNETE']], on='ID_ABONNE', how='inner')
+   dff = dff.drop_duplicates(subset=['ID_ABONNE', 'DATE_ACTE_REEL', 'DATE_PRISE_EFFET'])
+   dff2 = pd.merge(dff, df1[['ID_ABONNE','NOMBRE_ABONNEMENTS', 'SCORE_FIDELITE']], on='ID_ABONNE', how='inner')
+   colonne_extraite = dff2.pop('Cluster_8')
+   dff2['Cluster_8'] = colonne_extraite
+   save_to_csv_file(dff2, antoine_results + "df_all_clusters_final.csv")
+   return True
