@@ -9,8 +9,6 @@ from sklearn.preprocessing import StandardScaler  # Import StandardScaler for da
 from sklearn.cluster import KMeans  # Import KMeans clustering algorithm
 from sklearn.metrics import silhouette_samples, silhouette_score  # Import silhouette metrics
 
-from preparation_data_set import *  
-from new_data_set import *  
 from viualize_datas import * 
 from new_data_set_all import * 
 
