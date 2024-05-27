@@ -227,3 +227,89 @@ def trace_silhouette_scores(silhouette_scores, abscisses):
 
     return True
 
+
+
+def data_frame_cluster_all(data, columns, centers_inv, clusters, data_id_abo):
+    """
+    Create a DataFrame containing clusters, cluster centers, and subscriber IDs.
+
+    Args:
+    - data: DataFrame containing the data.
+    - columns: List of column names.
+    - centers_inv: Inverse cluster centers (denormalized).
+    - clusters: Cluster number assigned to each sample.
+    - data_id_abo: DataFrame containing subscriber IDs.
+
+    Returns:
+    - df_clusters: DataFrame containing clusters, centers, and percentage IDs.
+    """
+    # Add cluster labels and subscriber IDs to the data
+    data['KMEANS'] = clusters
+    data['ID_ABONNE'] = data_id_abo['ID_ABONNE']
+
+    # Generate DataFrame with cluster information
+    df_clusters = percent_abo_conditions(data, 'KMEANS', 'ID_ABONNE')
+    df_clusters = df_clusters.sort_values(by='KMEANS')
+
+    # Round and assign cluster centers to the DataFrame
+    centers = np.round(centers_inv, decimals=2)
+    for j in range(len(columns)):
+        df_clusters[columns[j]] = [centers[i][j] for i in range(len(centers))]
+
+    return df_clusters
+
+def clustering(filename, columns, data_path_results, change_inf=np.nan, change_nan=5):
+    """
+    Visualize silhouette scores for different numbers of clusters.
+
+    Args:
+    - filename: Name of the file containing the data.
+    - columns: List of column names to include in clustering.
+    - range_n_clusters: List of numbers of clusters to test.
+    - data_path_results: Path to save the results.
+    - change_inf: Value to use for replacing infinity.
+    - change_nan: Value to use for replacing NaN.
+
+    Returns:
+    - silhouette_scores: List of silhouette scores.
+    """
+    # Load the dataset from file
+    df = file_to_dataframe(filename)
+    data = df[columns]
+    
+    # Replace infinite values with specified value
+    data.replace([np.inf, -np.inf], change_inf, inplace=True)
+
+    # Normalize the data
+    scaler = StandardScaler()
+    datas = scaler.fit_transform(data)
+
+    data = pd.DataFrame(datas, columns=data.columns)
+    data_id_abo = df[['ID_ABONNE']]
+
+    data.replace(np.nan, change_nan, inplace=True)
+
+    clusterer = KMeans(8, random_state=10)
+    clusterer.fit(data)
+
+    centers = clusterer.cluster_centers_
+    centers_cluster = np.round(scaler.inverse_transform(centers), decimals=2)
+    df_cluster = data_frame_cluster(data, columns, scaler.inverse_transform(centers),
+                                             clusterer.labels_, data_id_abo)
+    
+    save_to_csv_file(df_cluster, data_path_results + "clusterall.csv")
+
+    cluster_labels = clusterer.fit_predict(data)
+
+    df['KMEANS'] = clusterer.labels_
+    df = df[['ID_ABONNE', 'KMEANS']]
+
+    save_to_csv_file(df, data_path + "clusters_id_all.csv")
+
+    return df
+
+df = file_to_dataframe(data_path + "fusion_table_final.csv")
+
+clustering(data_path + "fusion_table_final.csv",
+                                ['Semaine genéreuse_n_REABOS', 'ODD 15 jours TC_n_REABOS',
+                                 'SCORE_FIDELITE', 'ANCIENNETE'], data_path)
