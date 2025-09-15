@@ -1,6 +1,6 @@
-# Run pour clément
-import sys 
-sys.path.append("Data_operations")
-from Tool_Functions import cleaning_data
+# %%  Run some test
+from data_operations.tool_functions.cleaning_data import *
 
-#data_path = "/Users/clementgadeau/Library/CloudStorage/OneDrive-GENES/Cours 2A/Statapp/CANAL+/Datas/"
+data_path = ""
+
+# %%

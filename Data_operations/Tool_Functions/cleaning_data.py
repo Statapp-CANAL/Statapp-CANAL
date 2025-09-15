@@ -2,16 +2,16 @@ import pandas as pd
 import numpy as np
 
 
-def file_to_dataframe(filenames,st = ','): 
+def file_to_dataframe(filenames, st=","):
     """
-    Initialize the DataFrame from a filenames 
-    Parameters: 
+    Initialize the DataFrame from a filenames
+    Parameters:
     -----------
     filenames: str, the name of the file
     st: str, helps to delimites the columns of the datas because "Correspondances_promo
     are delimited with ';' while the other are delimited with ','.
     """
-    datas = pd.read_csv(filenames,delimiter=st)
+    datas = pd.read_csv(filenames, delimiter=st)
     return datas
 
 
@@ -20,12 +20,13 @@ def clean_dates(df):
     Clean the dates of the files with dates such as "2022-11-14T00:00:00Z" and change it into "2022-11-14"
     -----------
     df: dataframe, the dataframe that we use
-    
+
     """
-    for colu in df.columns :
-        if df[colu].dtype == object: 
-            df[colu] = df[colu].str.replace('T00:00:00Z', '')
-    return(df)
+    for colu in df.columns:
+        if df[colu].dtype == object:
+            df[colu] = df[colu].str.replace("T00:00:00Z", "")
+    return df
+
 
 def change_date(st):
     """
@@ -33,26 +34,28 @@ def change_date(st):
     -----------
     st: str, the date to change
 
-    """ 
-    if type(st) != str or len(st) < 10 : 
-        return(st)
-    else :
+    """
+    if type(st) != str or len(st) < 10:
+        return st
+    else:
         date = st[:10].split("/")
-        return(date[2]+"-"+date[1]+"-"+date[0])
-    
-def change_dates_all(df,cols):
+        return date[2] + "-" + date[1] + "-" + date[0]
+
+
+def change_dates_all(df, cols):
     """
     Change the dates of some columns of a dataFrame using the function change_date
     -----------
     df: dataframe, the DataFrame on which we are working
     cols: str list, a list of columns name that we want to change
 
-    """ 
-    for colu in cols : 
+    """
+    for colu in cols:
         df[colu] = df[colu].apply(change_date)
     return df
 
-def save_to_csv_file(df,filename):
+
+def save_to_csv_file(df, filename):
     """
     Save a dataframe on a .csv file at filename
     ----------
@@ -63,40 +66,46 @@ def save_to_csv_file(df,filename):
     return True
 
 
-
 def upload_clean(data_path):
     """
     Download clean files in your data_path
     There has to be the dirty files in your data_path
     """
-    df = file_to_dataframe(data_path + "Correspondances_Promos_2.csv",";")
-    df_Correspondances_Promos = change_dates_all(df,['DEBVAL', 'FINVAL', 'DEBABOMIN', 'DEBABOMAX'])
-    save_to_csv_file(df_Correspondances_Promos,data_path + "df_Correspondances_Promos.csv")
+    df = file_to_dataframe(data_path + "Correspondances_Promos_2.csv", ";")
+    df_Correspondances_Promos = change_dates_all(
+        df, ["DEBVAL", "FINVAL", "DEBABOMIN", "DEBABOMAX"]
+    )
+    save_to_csv_file(
+        df_Correspondances_Promos, data_path + "df_Correspondances_Promos.csv"
+    )
 
     for i in range(1, 4, 1):
-        df = file_to_dataframe(data_path + f"Données_Promos_202{i}.csv",",")
+        df = file_to_dataframe(data_path + f"Données_Promos_202{i}.csv", ",")
         df_Données_Promos_202i = clean_dates(df)
-        save_to_csv_file(df_Données_Promos_202i, data_path + f"df_Données_Promos_202{i}.csv")
+        save_to_csv_file(
+            df_Données_Promos_202i, data_path + f"df_Données_Promos_202{i}.csv"
+        )
 
-        df = file_to_dataframe(data_path + f"Données_Reabos_202{i}.csv",",")
+        df = file_to_dataframe(data_path + f"Données_Reabos_202{i}.csv", ",")
         df_Données_Reabos_202i = clean_dates(df)
-        save_to_csv_file(df_Données_Reabos_202i,data_path + f"df_Données_Reabos_202{i}.csv")
+        save_to_csv_file(
+            df_Données_Reabos_202i, data_path + f"df_Données_Reabos_202{i}.csv"
+        )
 
     return
+
 
 def concat_all_years(data_path):
     """
     Create new csv files that concats the 3 years at once.
     """
     for name in ["df_Données_Promos_202", "df_Données_Reabos_202"]:
-        df1 = file_to_dataframe(data_path + name + "1.csv",",")
-        df2 = file_to_dataframe(data_path + name + "2.csv",",")
-        df3 = file_to_dataframe(data_path + name + "3.csv",",")
+        df1 = file_to_dataframe(data_path + name + "1.csv", ",")
+        df2 = file_to_dataframe(data_path + name + "2.csv", ",")
+        df3 = file_to_dataframe(data_path + name + "3.csv", ",")
 
         df = pd.concat([df1, df2, df3], axis=0, ignore_index=True)
 
-        df.to_csv(data_path + name[:-4] + ".csv", index = True)
-
+        df.to_csv(data_path + name[:-4] + ".csv", index=True)
 
     return
-

@@ -4,11 +4,11 @@ from matplotlib.backends.backend_pdf import PdfPages
 import seaborn as sns
 
 
-def create_distribution_plot(df, title, label = 0, value = 1, number = True):
+def create_distribution_plot(df, title, label=0, value=1, number=True):
     """
     Creates a repartition graph
     Label is the number of the label column, value the number of the value column.
-    Number is True if I want to select the columns by their number 
+    Number is True if I want to select the columns by their number
     or False if I want to select them by their label.
     """
     plt.figure()
@@ -20,7 +20,9 @@ def create_distribution_plot(df, title, label = 0, value = 1, number = True):
     return
 
 
-def generer_graphique(df, categorie_col = None, quantite_col = None, graphique_type='camembert'):
+def generer_graphique(
+    df, categorie_col=None, quantite_col=None, graphique_type="camembert"
+):
     """
     Génère un graphique à partir d'un DataFrame à deux colonnes.
 
@@ -39,99 +41,118 @@ def generer_graphique(df, categorie_col = None, quantite_col = None, graphique_t
 
     # Vérifier si les colonnes existent dans le DataFrame
     elif categorie_col not in df.columns or quantite_col not in df.columns:
-        raise ValueError("Les colonnes spécifiées ne sont pas présentes dans le DataFrame.")
-    
-    else :
+        raise ValueError(
+            "Les colonnes spécifiées ne sont pas présentes dans le DataFrame."
+        )
+
+    else:
         categories = df[categorie_col]
         quantites = df[quantite_col]
-    
+
     # Créer le graphique
-    if graphique_type == 'camembert':
-        plt.pie(quantites, labels=categories, autopct='%1.1f%%', startangle=90)
-        plt.title('Répartition de ' + categorie_col)
-    elif graphique_type == 'histogramme':
+    if graphique_type == "camembert":
+        plt.pie(quantites, labels=categories, autopct="%1.1f%%", startangle=90)
+        plt.title("Répartition de " + categorie_col)
+    elif graphique_type == "histogramme":
         plt.bar(categories, quantites)
         plt.xlabel(categorie_col)
         plt.ylabel(quantite_col)
-        plt.title('Histogramme de' + categorie_col)
+        plt.title("Histogramme de" + categorie_col)
     else:
-        raise ValueError("Type de graphique non pris en charge. Utilisez 'camembert' ou 'histogramme'.")
+        raise ValueError(
+            "Type de graphique non pris en charge. Utilisez 'camembert' ou 'histogramme'."
+        )
 
     # Afficher le graphique
     plt.show()
     return
 
 
-def graph_repartition(df, value = 'NB_ID_ABONNE', repartition = 'TYPE_PROMON', through = 'DATE'):
+def graph_repartition(
+    df, value="NB_ID_ABONNE", repartition="TYPE_PROMON", through="DATE"
+):
     """
     Crée un graph à travers through de la quantité value
     et montre sa répartition selon repartion.
     """
-    if through == 'DATE':
+    if through == "DATE":
         # Convertir MONTH et YEAR en datetime pour faciliter la manipulation du temps
-        #df['DATE'] = pd.to_datetime(str(df['MONTH']) + ' ' + str(df['YEAR']).astype(str))
-        #df['DATE'] = pd.to_datetime(df['MONTH'].astype(str).str.cat(df['YEAR'].astype(str), sep=' '))
-        df['DATE'] = pd.to_datetime(df['MONTH'].astype(str) + '-' + df['YEAR'].astype(str), format='%m-%Y')
-        #df['DATE'] = df['MONTH'].astype(str) + '-' + df['YEAR'].astype(str).str[-2:]
-        #df = df.sort_values(by='DATE')
-        df['DATE'] = df['DATE'].dt.to_period('M')
-        df['DATE'] = df['DATE'].dt.strftime('%y')
-        df = df.sort_values(by='DATE')
-
+        # df['DATE'] = pd.to_datetime(str(df['MONTH']) + ' ' + str(df['YEAR']).astype(str))
+        # df['DATE'] = pd.to_datetime(df['MONTH'].astype(str).str.cat(df['YEAR'].astype(str), sep=' '))
+        df["DATE"] = pd.to_datetime(
+            df["MONTH"].astype(str) + "-" + df["YEAR"].astype(str), format="%m-%Y"
+        )
+        # df['DATE'] = df['MONTH'].astype(str) + '-' + df['YEAR'].astype(str).str[-2:]
+        # df = df.sort_values(by='DATE')
+        df["DATE"] = df["DATE"].dt.to_period("M")
+        df["DATE"] = df["DATE"].dt.strftime("%y")
+        df = df.sort_values(by="DATE")
 
     # Créer une figure avec deux sous-graphiques
     fig, axes = plt.subplots(2, 1, figsize=(10, 8))
 
-    sns.barplot(x=through, y=value, hue=repartition, data=df, ax=axes[0], palette='muted')
-    axes[0].set_title('Répartition de ' + value + ' par ' + repartition + ' selon ' + through)
+    sns.barplot(
+        x=through, y=value, hue=repartition, data=df, ax=axes[0], palette="muted"
+    )
+    axes[0].set_title(
+        "Répartition de " + value + " par " + repartition + " selon " + through
+    )
     axes[0].legend(title=repartition)
 
     return
 
 
-def graph_statdescr(data_path, data_path_results, nouns = 'Files_names.txt'):
+def graph_statdescr(data_path, data_path_results, nouns="Files_names.txt"):
     # Lire le fichier et transformer son contenu en liste
     with open(data_path + nouns, "r") as file:
         nouns_list = file.read().splitlines()
         print(nouns_list)
 
     # Creates a pdf documnent.
-    with PdfPages(data_path_results + 'Distribution_report.pdf') as pdf:
+    with PdfPages(data_path_results + "Distribution_report.pdf") as pdf:
         compteur = 1
         for file in nouns_list:
             print(compteur)
             compteur += 1
-            df = pd.read_csv(data_path + file,delimiter=',')
+            df = pd.read_csv(data_path + file, delimiter=",")
             len = df.shape[1]
-            
+
             if len == 2:
                 # Add graphs to pdf.
-                create_distribution_plot(df, f'{df.columns[1]} par {df.columns[0]}')
+                create_distribution_plot(df, f"{df.columns[1]} par {df.columns[0]}")
                 pdf.savefig()
                 plt.close()
             elif len == 3:
                 labels = df.columns.tolist()
-                list = [i for i in labels if i not in ['NB_ID_ABONNE']]
+                list = [i for i in labels if i not in ["NB_ID_ABONNE"]]
                 print(list)
-                graph_repartition(df, value = 'NB_ID_ABONNE', repartition = list[0], through = list[1])
-                graph_repartition(df, value = 'NB_ID_ABONNE', repartition = list[1], through = list[0])
+                graph_repartition(
+                    df, value="NB_ID_ABONNE", repartition=list[0], through=list[1]
+                )
+                graph_repartition(
+                    df, value="NB_ID_ABONNE", repartition=list[1], through=list[0]
+                )
                 pdf.savefig()
                 plt.close()
 
             elif len > 3:
                 labels = df.columns.tolist()
-                list = [i for i in labels if i not in ['NB_ID_ABONNE', 'MONTH', 'YEAR']] + ['DATE']
+                list = [
+                    i for i in labels if i not in ["NB_ID_ABONNE", "MONTH", "YEAR"]
+                ] + ["DATE"]
                 print(list)
 
                 for i in list:
                     for j in list:
                         if i != j:
-                            graph_repartition(df, value = 'NB_ID_ABONNE', repartition = i, through = j)
+                            graph_repartition(
+                                df, value="NB_ID_ABONNE", repartition=i, through=j
+                            )
                             pdf.savefig()
                             plt.close()
 
             # Ajuster la disposition
-        #plt.tight_layout()
+        # plt.tight_layout()
         pdf.savefig()
         plt.close()
-    return 
+    return

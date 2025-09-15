@@ -1,27 +1,36 @@
 # Deuxième test clustering
 
 import sys
-sys.path.append("Data_operations")
 
-from Tool_Functions.cleaning_data import *  # Import custom data cleaning functions
-from sklearn.preprocessing import StandardScaler  # Import StandardScaler for data normalization
+sys.path.append("data_operations")
+
+from tool_functions.cleaning_data import *  # Import custom data cleaning functions
+from sklearn.preprocessing import (
+    StandardScaler,
+)  # Import StandardScaler for data normalization
 
 from sklearn.cluster import KMeans  # Import KMeans clustering algorithm
-from sklearn.metrics import silhouette_samples, silhouette_score  # Import silhouette metrics
+from sklearn.metrics import (
+    silhouette_samples,
+    silhouette_score,
+)  # Import silhouette metrics
 
-from viualize_datas import * 
-from new_data_set_all import * 
+from viualize_datas import *
+from new_data_set_all import *
 
 import matplotlib.cm as cm  # Import colormap for visualizations
 import matplotlib.pyplot as plt  # Import plotting library
-import numpy as np  
+import numpy as np
 
-from matplotlib.backends.backend_pdf import PdfPages  # Import PdfPages for saving plots to PDF
+from matplotlib.backends.backend_pdf import (
+    PdfPages,
+)  # Import PdfPages for saving plots to PDF
 
 
-data_path = "/Users/maximecoppa/Desktop/Statapp_Data/Datas/"  # Path to data directory
+data_path = ""  # Path to data directory
 
 # Scales the data set
+
 
 def cluster_data_set(filename, columns, change_inf=np.nan, change_nan=15):
     """
@@ -38,10 +47,10 @@ def cluster_data_set(filename, columns, change_inf=np.nan, change_nan=15):
     """
     # Load the dataset from file
     df = file_to_dataframe(filename)
-    
+
     # Select the specified columns
     data = df[columns]
-    
+
     # Replace infinite values with specified value
     data.replace([np.inf, -np.inf], change_inf, inplace=True)
 
@@ -51,7 +60,9 @@ def cluster_data_set(filename, columns, change_inf=np.nan, change_nan=15):
     data = pd.DataFrame(datas, columns=data.columns)
 
     # Select a random 10% sample of the data
-    indices = np.random.choice(range(len(data)), size=int(len(data) * 0.1), replace=False)
+    indices = np.random.choice(
+        range(len(data)), size=int(len(data) * 0.1), replace=False
+    )
     data = data.iloc[indices]
 
     # Replace NaN values with specified value
@@ -59,7 +70,9 @@ def cluster_data_set(filename, columns, change_inf=np.nan, change_nan=15):
 
     return data
 
+
 # Après avoir utilisé KMeans et avoir obtenu clusters = ...
+
 
 def data_frame_cluster(data, columns, centers_inv, clusters, data_id_abo):
     """
@@ -76,12 +89,12 @@ def data_frame_cluster(data, columns, centers_inv, clusters, data_id_abo):
     - df_clusters: DataFrame containing clusters, centers, and percentage IDs.
     """
     # Add cluster labels and subscriber IDs to the data
-    data['KMEANS'] = clusters
-    data['ID_ABONNE'] = data_id_abo['ID_ABONNE']
+    data["KMEANS"] = clusters
+    data["ID_ABONNE"] = data_id_abo["ID_ABONNE"]
 
     # Generate DataFrame with cluster information
-    df_clusters = percent_abo_conditions(data, 'KMEANS', 'ID_ABONNE')
-    df_clusters = df_clusters.sort_values(by='KMEANS')
+    df_clusters = percent_abo_conditions(data, "KMEANS", "ID_ABONNE")
+    df_clusters = df_clusters.sort_values(by="KMEANS")
 
     # Round and assign cluster centers to the DataFrame
     centers = np.round(centers_inv, decimals=2)
@@ -91,7 +104,7 @@ def data_frame_cluster(data, columns, centers_inv, clusters, data_id_abo):
     return df_clusters
 
 
-def write_df_to_excel(df, file_name, sheet_name='Sheet1'):
+def write_df_to_excel(df, file_name, sheet_name="Sheet1"):
     """
     Write a DataFrame to an Excel file.
 
@@ -101,7 +114,7 @@ def write_df_to_excel(df, file_name, sheet_name='Sheet1'):
     - sheet_name: Name of the sheet in the Excel file (default is 'Sheet1').
     """
     # Create a writer with the specified file name
-    writer = pd.ExcelWriter(file_name, engine='xlsxwriter')
+    writer = pd.ExcelWriter(file_name, engine="xlsxwriter")
 
     # Write the DataFrame to the specified sheet
     df.to_excel(writer, sheet_name=sheet_name, index=False)
@@ -112,7 +125,14 @@ def write_df_to_excel(df, file_name, sheet_name='Sheet1'):
     return True
 
 
-def visualize_silhouette_datas_all(filename, columns, range_n_clusters, data_path_results, change_inf=np.nan, change_nan=15):
+def visualize_silhouette_datas_all(
+    filename,
+    columns,
+    range_n_clusters,
+    data_path_results,
+    change_inf=np.nan,
+    change_nan=15,
+):
     """
     Visualize silhouette scores for different numbers of clusters.
 
@@ -130,7 +150,7 @@ def visualize_silhouette_datas_all(filename, columns, range_n_clusters, data_pat
     # Load the dataset from file
     df = file_to_dataframe(filename)
     data = df[columns]
-    
+
     # Replace infinite values with specified value
     data.replace([np.inf, -np.inf], change_inf, inplace=True)
 
@@ -141,9 +161,11 @@ def visualize_silhouette_datas_all(filename, columns, range_n_clusters, data_pat
     data = pd.DataFrame(datas, columns=data.columns)
 
     # Select a random 10% sample of the data
-    indices = np.random.choice(range(len(data)), size=int(len(data) * 0.1), replace=False)
+    indices = np.random.choice(
+        range(len(data)), size=int(len(data) * 0.1), replace=False
+    )
     data = data.iloc[indices]
-    data_id_abo = df[['ID_ABONNE']].iloc[indices]
+    data_id_abo = df[["ID_ABONNE"]].iloc[indices]
 
     # Replace NaN values with specified value
     data.replace(np.nan, change_nan, inplace=True)
@@ -162,11 +184,20 @@ def visualize_silhouette_datas_all(filename, columns, range_n_clusters, data_pat
             centers_cluster = np.round(scaler.inverse_transform(centers), decimals=2)
 
             # Create DataFrame with cluster information
-            df_cluster = data_frame_cluster(data, columns, scaler.inverse_transform(centers),
-                                             clusterer.labels_, data_id_abo)
-            
+            df_cluster = data_frame_cluster(
+                data,
+                columns,
+                scaler.inverse_transform(centers),
+                clusterer.labels_,
+                data_id_abo,
+            )
+
             # Write cluster DataFrame to Excel
-            write_df_to_excel(df_cluster, data_path_results + "cluster" + str(n_clusters) + ".xlsx", str(n_clusters))
+            write_df_to_excel(
+                df_cluster,
+                data_path_results + "cluster" + str(n_clusters) + ".xlsx",
+                str(n_clusters),
+            )
 
             cluster_labels = clusterer.fit_predict(data)
 
@@ -175,8 +206,10 @@ def visualize_silhouette_datas_all(filename, columns, range_n_clusters, data_pat
             silhouette_scores.append(silhouette_avg)
 
             print(
-                "For n_clusters =", n_clusters,
-                "The average silhouette_score is :", silhouette_avg,
+                "For n_clusters =",
+                n_clusters,
+                "The average silhouette_score is :",
+                silhouette_avg,
             )
 
             fig, ax1 = plt.subplots(1, 1)
@@ -190,17 +223,27 @@ def visualize_silhouette_datas_all(filename, columns, range_n_clusters, data_pat
 
             for i in range(n_clusters):
 
-                ith_cluster_silhouette_values = sample_silhouette_values[cluster_labels == i]
+                ith_cluster_silhouette_values = sample_silhouette_values[
+                    cluster_labels == i
+                ]
                 ith_cluster_silhouette_values.sort()
                 size_cluster_i = ith_cluster_silhouette_values.shape[0]
                 y_upper = y_lower + size_cluster_i
                 color = cm.nipy_spectral(float(i) / n_clusters)
-                ax1.fill_betweenx(np.arange(y_lower, y_upper), 0, ith_cluster_silhouette_values, facecolor=color,
-                                  edgecolor=color, alpha=0.7)
+                ax1.fill_betweenx(
+                    np.arange(y_lower, y_upper),
+                    0,
+                    ith_cluster_silhouette_values,
+                    facecolor=color,
+                    edgecolor=color,
+                    alpha=0.7,
+                )
                 ax1.text(-0.8, y_lower + 0.5 * size_cluster_i, str(i))
                 y_lower = y_upper + 10
 
-            ax1.set_title("The silhouette plot for the various clusters." + str(n_clusters))
+            ax1.set_title(
+                "The silhouette plot for the various clusters." + str(n_clusters)
+            )
             ax1.set_xlabel("The silhouette coefficient values")
             ax1.set_ylabel("Cluster label")
 
@@ -214,19 +257,19 @@ def visualize_silhouette_datas_all(filename, columns, range_n_clusters, data_pat
 
     return silhouette_scores
 
+
 def trace_silhouette_scores(silhouette_scores, abscisses):
 
     plt.figure(figsize=(8, 6))
-    plt.plot(abscisses, silhouette_scores, marker='o')
-    plt.xlabel('Number of clusters')
-    plt.ylabel('KMeans Silhouette Score')
-    plt.title('Silhouette Score for Different Numbers of Clusters')
+    plt.plot(abscisses, silhouette_scores, marker="o")
+    plt.xlabel("Number of clusters")
+    plt.ylabel("KMeans Silhouette Score")
+    plt.title("Silhouette Score for Different Numbers of Clusters")
     plt.show()
 
     plt.xticks(abscisses)
 
     return True
-
 
 
 def data_frame_cluster_all(data, columns, centers_inv, clusters, data_id_abo):
@@ -244,12 +287,12 @@ def data_frame_cluster_all(data, columns, centers_inv, clusters, data_id_abo):
     - df_clusters: DataFrame containing clusters, centers, and percentage IDs.
     """
     # Add cluster labels and subscriber IDs to the data
-    data['KMEANS'] = clusters
-    data['ID_ABONNE'] = data_id_abo['ID_ABONNE']
+    data["KMEANS"] = clusters
+    data["ID_ABONNE"] = data_id_abo["ID_ABONNE"]
 
     # Generate DataFrame with cluster information
-    df_clusters = percent_abo_conditions(data, 'KMEANS', 'ID_ABONNE')
-    df_clusters = df_clusters.sort_values(by='KMEANS')
+    df_clusters = percent_abo_conditions(data, "KMEANS", "ID_ABONNE")
+    df_clusters = df_clusters.sort_values(by="KMEANS")
 
     # Round and assign cluster centers to the DataFrame
     centers = np.round(centers_inv, decimals=2)
@@ -257,6 +300,7 @@ def data_frame_cluster_all(data, columns, centers_inv, clusters, data_id_abo):
         df_clusters[columns[j]] = [centers[i][j] for i in range(len(centers))]
 
     return df_clusters
+
 
 def clustering(filename, columns, data_path_results, change_inf=np.nan, change_nan=5):
     """
@@ -276,7 +320,7 @@ def clustering(filename, columns, data_path_results, change_inf=np.nan, change_n
     # Load the dataset from file
     df = file_to_dataframe(filename)
     data = df[columns]
-    
+
     # Replace infinite values with specified value
     data.replace([np.inf, -np.inf], change_inf, inplace=True)
 
@@ -285,7 +329,7 @@ def clustering(filename, columns, data_path_results, change_inf=np.nan, change_n
     datas = scaler.fit_transform(data)
 
     data = pd.DataFrame(datas, columns=data.columns)
-    data_id_abo = df[['ID_ABONNE']]
+    data_id_abo = df[["ID_ABONNE"]]
 
     data.replace(np.nan, change_nan, inplace=True)
 
@@ -294,22 +338,31 @@ def clustering(filename, columns, data_path_results, change_inf=np.nan, change_n
 
     centers = clusterer.cluster_centers_
     centers_cluster = np.round(scaler.inverse_transform(centers), decimals=2)
-    df_cluster = data_frame_cluster(data, columns, scaler.inverse_transform(centers),
-                                             clusterer.labels_, data_id_abo)
-    
+    df_cluster = data_frame_cluster(
+        data, columns, scaler.inverse_transform(centers), clusterer.labels_, data_id_abo
+    )
+
     save_to_csv_file(df_cluster, data_path_results + "clusterall.csv")
 
     cluster_labels = clusterer.fit_predict(data)
 
-    df['KMEANS'] = clusterer.labels_
-    df = df[['ID_ABONNE', 'KMEANS']]
+    df["KMEANS"] = clusterer.labels_
+    df = df[["ID_ABONNE", "KMEANS"]]
 
     save_to_csv_file(df, data_path + "clusters_id_all.csv")
 
     return df
 
+
 df = file_to_dataframe(data_path + "fusion_table_final.csv")
 
-clustering(data_path + "fusion_table_final.csv",
-                                ['Semaine genéreuse_n_REABOS', 'ODD 15 jours TC_n_REABOS',
-                                 'SCORE_FIDELITE', 'ANCIENNETE'], data_path)
+clustering(
+    data_path + "fusion_table_final.csv",
+    [
+        "Semaine genéreuse_n_REABOS",
+        "ODD 15 jours TC_n_REABOS",
+        "SCORE_FIDELITE",
+        "ANCIENNETE",
+    ],
+    data_path,
+)
