@@ -43,7 +43,7 @@ The original datasets and the final insights of the study are **confidential** t
 │   ├── cluster_prediction_validation.ipynb   
 │   └── facteurs_multiplicatifs.ipynb       
 │
-├── test/                                  # Prototyping and quick experiments
+├── test_generic/                                  # Prototyping and quick experiments
 │
 └── README.md
 
