@@ -1,4 +1,4 @@
-# Canal+ International – Data Science Project
+# Canal+ International - Data Science Project
 Personalization and Performance of Loyalty Programs in Africa
 
 ---
@@ -8,7 +8,7 @@ Personalization and Performance of Loyalty Programs in Africa
 This project was carried out in collaboration with **Canal+ International** to analyze and improve the personalization and effectiveness of loyalty programs for prepaid subscribers in Africa.
 
 - **Context**: In Senegal, Canal+ operates with prepaid subscriptions where promotions play a crucial role in renewal behavior. The company needed to measure the true effectiveness of loyalty programs and move towards more personalized strategies.  
-- **Data**: Over 10 million subscription records (2021–2023) from more than 500,000 subscribers.  
+- **Data**: Over 10 million subscription records (2021-2023) from more than 500,000 subscribers.  
 - **Approach**:
   - Built descriptive analyses to understand customer habits and promotion usage.
   - Designed a clustering framework (K-means) to segment subscribers into interpretable groups.
@@ -73,5 +73,5 @@ The original datasets and the final insights of the study are **confidential** t
 
 ## Authors
 - Maxime Coppa, Clément Gadeau, Antoine Gilson  
-(ENSAE Paris – StatApp 2023/24, in collaboration with Canal+ International)
+(ENSAE Paris - StatApp 2023/24, in collaboration with Canal+ International)
 
