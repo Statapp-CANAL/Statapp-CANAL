@@ -1,6 +1,6 @@
 # clustering tests
 
-from .clustering_Kmeans import *
+from .clustering_kmeans import *
 
 data_path = ""  # Path to data directory
 
