@@ -1,0 +1,10 @@
+.DS_Store
+
+# Python compiled files
+__pycache__/
+*.pyc
+
+# Ignore all CSV files
+*.csv
+
+.ipynb_checkpoints/

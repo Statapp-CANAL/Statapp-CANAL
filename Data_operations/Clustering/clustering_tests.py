@@ -1,9 +1,8 @@
-# Clustering tests
+# clustering tests
 
-from clustering_Kmeans import * 
+from .clustering_Kmeans import *
 
-data_path = "/Users/maximecoppa/Desktop/Statapp_Data/Datas/"  # Path to data directory
-path_antoine = "/Users/antoine/Documents/ENSAE2A/Codeperso/everything/Statappperso/Ressources/"
+data_path = ""  # Path to data directory
 
 # Test Kmeans
 
@@ -11,11 +10,16 @@ path_antoine = "/Users/antoine/Documents/ENSAE2A/Codeperso/everything/Statappper
 trace_silhouette_scores(visualize_silhouette_datas_all(data_path + "data_clustering.csv",
                                                        ['ODD 15 jours TC_MEAN_TIME_DIFF'],
                                                        [2, 3, 4, 5],
-                                                       data_path + "Clustering_results/"), [2, 3, 4,5])
+                                                       data_path + "clustering_results/"), [2, 3, 4,5])
 
 """
 
-trace_silhouette_scores(visualize_silhouette_datas_all(path_antoine + "fusion_table_score_v1.csv",
-                                                       ['ODD 15 jours TC_MEAN_TIME_DIFF'],
-                                                       [2, 3, 4, 5],
-                                                       path_antoine + "Clustering_results/"), [2, 3, 4,5])
+trace_silhouette_scores(
+    visualize_silhouette_datas_all(
+        data_path + "fusion_table_score_v1.csv",
+        ["ODD 15 jours TC_MEAN_TIME_DIFF"],
+        [2, 3, 4, 5],
+        data_path + "clustering_results/",
+    ),
+    [2, 3, 4, 5],
+)
