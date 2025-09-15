@@ -72,6 +72,6 @@ The original datasets and the final insights of the study are **confidential** t
 ---
 
 ## Authors
-- Maxime Coppa, Clément Gadeau, Antoine Gilson  
+- Antoine Gilson, Clément Gadeau, Maxime Coppa
 (ENSAE Paris - StatApp 2023/24, in collaboration with Canal+ International)
 
